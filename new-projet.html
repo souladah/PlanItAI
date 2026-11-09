@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nouveau projet - Planit AI</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+</head>
+<body >
+    <header class="flex items-center justify-between bg-blue-100">
+           <div id="logo" class="ml-10">
+                 <img src="logo.png" alt="" class="w-20 h-20">    
+           </div>
+            <nav class="flex  items-center justify-around gap-10 mr-10">
+                <a href="" class="font-bold ">Dashboard</a>
+                <a href="" class="font-bold ">Nouveau projet</a>
+                <a href="" class="font-bold ">Paramètres </a>
+            </nav>
+        
+    </header>
+    <main>
+        <section id="formulaire">
+            <h1 class="mt-5 font-bold text-center"> Entrer les donnees de votre projet</h1>
+            <form class="w-150 bg-blue-50 mx-auto mt-10 rounded-lg p-5 flex flex-col">
+                <label for="nom">nom :</label> <br>
+                <input type="text" nom="nom" placeholder="entrer le nom de votre projet" class="w-100 border-2   border-gray-500 rounded-lg focus:border-sky-500"><br>
+                <label for="description">description :</label><br>
+                <input type="text" nom="nom" placeholder="entrer la description du projet"><br>
+                <label for="durée">durée du projet :</label><br>
+                <input type="date" nom="durée"><br>
+                <label for="nbr-dev">nombre de développeurs :</label><br>
+                <input type="number" nom="nbr-dev" ><br>
+                <label for="techno">technologies :</label><br>
+                <input type="text" nom="nom" placeholder="technologies"><br>
+                <label for="brief-complet">brief-complet :</label><br>
+                <textarea name="brief-complet" id=""></textarea><br>
+                <label for="niveau">niveau de difficulté :</label><br>
+                <select name="niveau" id="niveau">
+                    <option value=""></option>
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                </select>
+            </form>
+
+        </section>
+    </main>
+
+</body>
+</html>
