@@ -19,7 +19,7 @@ export function setProjet(projects){
     return localStorage.setItem(PROJECT_KEY , JSON.stringify(projects))
 }
 // ajouter un projet
-export function addPojet(newProjet){
+export function addProjet(newProjet){
     let allProjets=getProjet();
     allProjets.push(newProjet);
     setProjet(allProjets);

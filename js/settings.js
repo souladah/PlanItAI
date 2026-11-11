@@ -1,3 +1,5 @@
+import { getApi , saveApi } from "./storage.js";
+
 let openBtn=document.querySelector("#openSettings");
 let dialog=document.querySelector("dialog")
 let closBTn=document.querySelector("#fermer");
@@ -5,7 +7,7 @@ let input=document.getElementById("token");
 let cancelBtn=document.getElementById("anulerBTn");
 
 openBtn.addEventListener("click",()=>{
-    input.value=sessionStorage.getItem("cleApi")||"";
+    input.value=getApi();
     dialog.showModal();
 })
 closBTn.addEventListener("click",()=>{
@@ -18,7 +20,7 @@ let enregistrerBtn=document.querySelector("#enregistrerBtn");
 
 enregistrerBtn.addEventListener("click",()=>{
     let valeur=input.value.trim();
-    if(valeur) sessionStorage.setItem("cleApi",valeur);
+    if(valeur) saveApi(valeur);
     dialog.close();
 })
 
