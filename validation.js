@@ -10,11 +10,13 @@ const rules = [
     { id: "niveau",      regex: /^(Beginner|Intermediate|Advanced)$/, message: "Choisissez un niveau de difficulté." }
 ];
 function validate(id){
-    document.querySelectorAll(".erreur").forEach(el=>el.remove());
     let notValide=[]
-    rules.forEach(rule=>{
+    for(let rule of rules){
        let input=document.getElementById(rule.id);
-       let valeur =input.value ;
+       let valeur =input.value.trim() ;
+       let nextElement=input.nextElementSibling;
+       if(id!=rule.id) continue  ;//// ignore les autres champs : seul le champ modifie affiche son erreur
+       if(nextElement && nextElement.classList.contains("erreur")) nextElement.remove();
        if(!rule.regex.test(valeur)){
         let span=document.createElement("span")
         span.textContent=rule.message;
@@ -22,7 +24,7 @@ function validate(id){
         input.insertAdjacentElement("afterend",span)
         notValide.push(rule.id);
        }
-    })  
+    }
     return notValide.length > 0 ? false : true  
 }
 form.addEventListener("input",(e)=>{
