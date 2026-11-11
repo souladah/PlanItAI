@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="js.js"></script>
+    <script src="js.js" defer></script>
 </head>
 <body class="min-h-screen bg-slate-50 text-slate-800">
     <header class="flex items-center justify-between bg-white px-10 py-3 shadow-sm border-b border-slate-200 flex-wrap">
@@ -19,24 +19,29 @@
                 <a href="new-projet.html" class="text-blue-600 font-semibold  py-5">
                     Nouveau projet
                 </a> 
-                <a href="#" class="text-blue-600 font-semibold py-5">
+                <a href="#" id="openSettings" class="text-blue-600 font-semibold py-5">
                     Paramètres
                 </a>              
             </nav>
         
     </header>
     <main>
-        <dialog id="settingDialogue" class="w-full max-w-md rounded-xl p-6 shadow-xl backdrop:bg-black/50 m-auto ">
+         <dialog id="settingDialogue" class=" relative w-full max-w-md rounded-xl p-6 shadow-xl backdrop:bg-black/50 m-auto ">
             <h2 class="text-xl font-bold text-slate-800 mb-2">   Paramètres IA</h2>
+            <button class="absolute top-3 right-5 cursor-pointer text-slate-400 w" id="fermer">✕</button>
             <p class="text-sm text-slate-500 mb-5"> Entrez votre clé API pour activer les fonctionnalités IA.</p>
             <label for="token" class="block text-sm font-semibold text-slate-700 mb-2">Clé API</label>
             <input type="password" name="token" id="token" placeholder="Entrer votre clé API" class="px-4 py-3 rounded-lg border border-slate-300 w-full  focus:ring-blue-500 focus:border-blue-500">
-            <button id="anulerBTn">Annuler</button><button id="enregistrerBtn">Enregistrer</button>
+            <div class="flex justify-between my-10">
+                  <button id="anulerBTn" class="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg font-semibold transition">Annuler</button>
+                  <button id="enregistrerBtn" class="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg font-semibold transition">Enregistrer</button>
+            </div>
+            
         </dialog>
         <section id="list-pr">
             <div class="flex justify-between w-full h-20 items-center p-4 ">
                  <h1 class=" text-2xl font-bold text-slate-800 mb-3">Mes projets</h1>
-                 <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg font-semibold transition">   + Créer un projet </button>
+                 <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg font-semibold transition"> <a href="new-projet.html">+ Créer un projet</a>   </button>
             </div>
            
             <p class="text-center mt-[200px] text-2xl font-bold text-slate-800 mb-3">Aucun projet pour le moment, créez-en un pour générer votre premier plan.</p>

@@ -15,8 +15,8 @@ function validate(id){
        let input=document.getElementById(rule.id);
        let valeur =input.value.trim() ;
        let nextElement=input.nextElementSibling;
-       if(id!=rule.id) continue  ;//// ignore les autres champs : seul le champ modifie affiche son erreur
        if(nextElement && nextElement.classList.contains("erreur")) nextElement.remove();
+       if(id!=rule.id) continue  ;//// ignore les autres champs : seul le champ modifie affiche son erreur
        if(!rule.regex.test(valeur)){
         let span=document.createElement("span")
         span.textContent=rule.message;
@@ -34,10 +34,10 @@ form.addEventListener("input",(e)=>{
 form.addEventListener("submit",(e)=>{
     e.preventDefault();
     if(validate()===false){
-        console.log("non valide");
+        alert("non valide");
         return ;
     }
-    console.log("valide")
+    alert("valide");
 })
 btn.disabled=true;
 
