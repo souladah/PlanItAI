@@ -14,30 +14,29 @@ function validate(id){
     for(let rule of rules){
        let input=document.getElementById(rule.id);
        let valeur =input.value.trim() ;
+       let valide=rule.regex.test(valeur)
+        if(!valide) notValide.push(rule.id);
+       if(id && id!=rule.id) continue  ;//// ignore les autres champs : seul le champ modifie affiche son erreur
        let nextElement=input.nextElementSibling;
        if(nextElement && nextElement.classList.contains("erreur")) nextElement.remove();
-       if(id!=rule.id) continue  ;//// ignore les autres champs : seul le champ modifie affiche son erreur
-       if(!rule.regex.test(valeur)){
-        let span=document.createElement("span")
-        span.textContent=rule.message;
-        span.classList.add("erreur", "block", "text-xs", "mt-1", "text-red-600");
-        input.insertAdjacentElement("afterend",span)
-        notValide.push(rule.id);
+       if(!valide){
+            let span=document.createElement("span")
+            span.textContent=rule.message;
+            span.classList.add("erreur", "block", "text-xs", "mt-1", "text-red-600");
+            input.insertAdjacentElement("afterend",span)
        }
     }
     return notValide.length > 0 ? false : true  
 }
 form.addEventListener("input",(e)=>{
-    let Estvalide=validate(e.target.id);
+     let Estvalide=validate(e.target.id);
     btn.disabled=!Estvalide
-})
+});
 form.addEventListener("submit",(e)=>{
     e.preventDefault();
     if(validate()===false){
-        alert("non valide");
         return ;
     }
     alert("valide");
 })
 btn.disabled=true;
-
