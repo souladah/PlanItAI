@@ -3,24 +3,24 @@ const PROJECT_KEY="planit_projects";
 
 //get api
 export function getApi(){
-    return sessionStorage.getItem(API_key_NAME)|| "";
+    return sessionStorage.getItem(API_key_NAME)||"";
 }
 
 // save api
-export function saveApi(key){
-    return sessionStorage.setItem(API_key_NAME,key);
+export function saveApi(value){
+    return sessionStorage.setItem(API_key_NAME,value);
 }
 // get projet
-export function getProjects(){
+export function getProjet(){
     return JSON.parse(localStorage.getItem(PROJECT_KEY))||[];
 }
 // set projet
-export function saveProjects(projects){
-     localStorage.setItem(PROJECT_KEY , JSON.stringify(projects))
+export function setProjet(projects){
+    return localStorage.setItem(PROJECT_KEY , JSON.stringify(projects))
 }
 // ajouter un projet
-export function addProject(project){
-    const projects=getProjects();
-    projects.push(project);
-    saveProjects(projects);
+export function addPojet(newProjet){
+    let allProjets=getProjet();
+    allProjets.push(newProjet);
+    setProjet(allProjets);
 }
