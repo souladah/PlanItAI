@@ -7,19 +7,19 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="js.js"></script>
 </head>
-<body class="min-h-screen bg-slate-50 text-slate=8000">
+<body class="min-h-screen bg-slate-50 text-slate-800">
     <header class="flex items-center justify-between bg-white px-10 py-3 shadow-sm border-b border-slate-200 flex-wrap">
            <div id="logo" class=" flex items-center gap-3">
-                 <img src="logo.png" alt="" class="w-25 h-25 object-contain">
+                 <img src="logo.png" alt="" class="w-30 h-30 object-contain">
            </div>
             <nav class="flex  items-center justify-around gap-10 mr-10 flex-wrap">
                 <a href="index.html" class="text-blue-600 font-semibold border-b-2 border-blue-600 py-5">
                     Dashboard
                 </a>
-                <a href="new-projet.html" class="text-blue-600 font-semibold border-b-2 border-blue-600 py-5">
+                <a href="new-projet.html" class="text-blue-600 font-semibold  py-5">
                     Nouveau projet
                 </a> 
-                <a href="#" class="text-blue-600 font-semibold border-b-2 border-blue-600 py-5">
+                <a href="#" class="text-blue-600 font-semibold py-5">
                     Paramètres
                 </a>              
             </nav>
@@ -30,8 +30,8 @@
             <h2 class="text-xl font-bold text-slate-800 mb-2">   Paramètres IA</h2>
             <p class="text-sm text-slate-500 mb-5"> Entrez votre clé API pour activer les fonctionnalités IA.</p>
             <label for="token" class="block text-sm font-semibold text-slate-700 mb-2">Clé API</label>
-            <input type="password" name="token" id="token" placeholder="Entrer votre clé API" class="px-4 py-3 rounded-lg border-slate-300 w-full  focus:ring-blue-500 focus:border-blue-500">
-            <button>Annuler</button><button>Enregistrer</button>
+            <input type="password" name="token" id="token" placeholder="Entrer votre clé API" class="px-4 py-3 rounded-lg border border-slate-300 w-full  focus:ring-blue-500 focus:border-blue-500">
+            <button id="anulerBTn">Annuler</button><button id="enregistrerBtn">Enregistrer</button>
         </dialog>
         <section id="list-pr">
             <div class="flex justify-between w-full h-20 items-center p-4 ">

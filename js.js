@@ -1,1 +1,1 @@
-document.getElementById("settingsDialog").showModal();
+//
