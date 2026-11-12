@@ -6,7 +6,8 @@ let closBTn=document.querySelector("#fermer");
 let input=document.getElementById("token");
 let cancelBtn=document.getElementById("anulerBTn");
 
-openBtn.addEventListener("click",()=>{
+openBtn.addEventListener("click",(e)=>{
+    e.preventDefault();
     input.value=getApi();
     dialog.showModal();
 })

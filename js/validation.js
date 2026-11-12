@@ -1,5 +1,3 @@
-let form=document.querySelector("form");
-let btn=document.querySelector('#btnSubmit')
 const rules = [
     { id: "nom",         regex: /^.{3,60}$/,     message: "Le nom doit contenir entre 3 et 60 caractères." },
     { id: "description", regex: /^.{10,200}$/,   message: "La description doit contenir entre 10 et 200 caractères." },
@@ -9,7 +7,7 @@ const rules = [
     { id: "techno",      regex: /^.{2,}$/,       message: "Indiquez au moins une technologie." },
     { id: "niveau",      regex: /^(Beginner|Intermediate|Advanced)$/, message: "Choisissez un niveau de difficulté." }
 ];
-function validate(id){
+export function validate(id){
     let notValide=[]
     for(let rule of rules){
        let input=document.getElementById(rule.id);
@@ -28,15 +26,3 @@ function validate(id){
     }
     return notValide.length > 0 ? false : true  
 }
-form.addEventListener("input",(e)=>{
-     let Estvalide=validate(e.target.id);
-    btn.disabled=!Estvalide
-});
-form.addEventListener("submit",(e)=>{
-    e.preventDefault();
-    if(validate()===false){
-        return ;
-    }
-    alert("valide");
-})
-btn.disabled=true;

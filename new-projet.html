@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nouveau projet - Planit AI</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="./js/validation.js" defer></script>
-    <script src="./js/settings.js" type="module"></script>
+    <script src="./js/main.js" type="module"></script>
 
 </head>
 <body class="min-h-screen bg-slate-50 text-slate-800">
@@ -47,9 +46,9 @@
                 <input type="text" id="nom"  name="nom" placeholder="entrer le nom de votre projet" class="w-full border-2   border-gray-400 rounded-lg p-2 focus:border-sky-500 focus:outline-none"><br>
                 <label for="description">description :</label><br>
                 <input type="text" id="description"  name="nom" placeholder="Entrer la description du projet" class="w-full border-2   border-gray-400 rounded-lg p-2 focus:border-sky-500 focus:outline-none"><br>
-                <label for="durée">durée du projet :</label><br>
+                <label for="duree">durée du projet :</label><br>
                 <input type="number" id="duree" name="durée" class="w-full border-2   border-gray-400 rounded-lg p-2 focus:border-sky-500 focus:outline-none"><br>
-                <label for="nbr-dev">nombre de développeurs :</label><br>
+                <label for="nbrDev">nombre de développeurs :</label><br>
                 <input type="number" id="nbDev" name="nbr-dev" class="w-full border-2   border-gray-400 rounded-lg p-2 focus:border-sky-500 focus:outline-none"><br>
                 <label for="techno">technologies :</label><br>
                 <input type="text" id="techno" name="nom" placeholder="technologies" class="w-full border-2   border-gray-400 rounded-lg p-2 focus:border-sky-500 focus:outline-none"><br>
@@ -62,7 +61,10 @@
                     <option value="Intermediate">Intermediate</option>
                     <option value="Advanced">Advanced</option>
                 </select> <br>
-                <button type="submit" id="btnSubmit" class="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg font-semibold transition">envoyer </button>
+                <button type="submit" id="btnSubmit" class="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg font-semibold transition
+                 disabled:opacity-50 disabled:cursor-not-allowed">
+                   envoyer
+                </button>
             </form>
 
         </section>

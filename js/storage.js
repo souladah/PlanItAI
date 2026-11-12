@@ -1,5 +1,5 @@
-const API_key_NAME="cleApi";
-const PROJECT_KEY="planit_projects";
+export const API_key_NAME="cleApi";
+export const PROJECT_KEY="planit_projects";
 
 //get api
 export function getApi(){
