@@ -2,7 +2,7 @@ import { validate } from "./validation.js";
 import { buildPrompt } from "./prompt.js";
 import './settings.js' ;
 import { addProjet } from "./storage.js";
-
+import {callAi} from "./api.js";
 
 // form validation and add a projet , build projet
 let form=document.querySelector("form");
@@ -22,10 +22,15 @@ form.addEventListener("submit",(e)=>{
     for(let champ of champs){
         projet[champ.id]=champ.value.trim();
     }
-    console.log(projet)
-    
-    console.log(buildPrompt(projet))
+    addProjet(projet);
+    let prompt=buildPrompt(projet);
+    btn.disabled=true;
+    btn.textContent="Generation en cours ..."
+    let data =callAi(prompt);
+    if(callAi(prompt)){
+            btn.textContent="envoyer";
+        }
+    console.log(data) ;
 })
-btn.disabled=true;
 
-//
+// 
