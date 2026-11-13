@@ -1,4 +1,4 @@
-import { addProjet } from "./storage.js";
+import { addProjet, getProjet } from "./storage.js";
 
 const url="data/data.json"
 export   function load(){
@@ -8,6 +8,7 @@ export   function load(){
         return response.json();
       })
       .then(plan=>{
+        if(getProjet().some(p=>p.id==="demo")) return ;
          addProjet({
             id:"demo",
             ...plan.project,
