@@ -3,6 +3,7 @@ import { buildPrompt } from "./prompt.js";
 import { initSttingsDIalog , renderlist } from "./ui.js";
 import { addProjet , getApi , saveApi } from "./storage.js";
 import {callAi} from "./api.js";
+import { load } from "./demo.js";
 
 initSttingsDIalog({getkey:getApi , saveKey:saveApi ,load:load});
 renderlist();

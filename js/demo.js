@@ -17,7 +17,7 @@ export   function load(){
          });
       })
       .catch(error=>{
-        throw new Error("impossible de charger le plan"+ error.message);
+        throw new Error("impossible de charger le plan "+ error.message);
       });
     
 }

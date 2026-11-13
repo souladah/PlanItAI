@@ -1,11 +1,10 @@
-import './settings.js' ;
-import { getProjet , removeProjet } from './storage.js';
+import { getProjet , removeProjet ,saveApi,getApi } from './storage.js';
 import { load } from './demo.js';
 let container=document.getElementById("projectsList");
 let empty=document.getElementById("msgEmpty");
 
 export function renderlist(){
-    
+    if(!container || !empty )return ;
     let projets=getProjet();
 
     container.innerHTML="";
@@ -26,14 +25,17 @@ export function renderlist(){
             </div>
             <p class="text-sm font-semibold">${percent}%</p>
             <div class="flex justify-between mt-2">
-             <a class="lien text-blue-600 font-semibold" href="#">Voir le task Board</a>
+             <button type="button" class="btn-show text-blue-600 font-semibold cursor-pointer"><a href="#">show model</a></button>
              <button type="button" class="btn-delete text-red-600 font-semibold cursor-pointer">Supprimer</button>
             </div>
              `;
         card.querySelector(".nom").textContent=p.nom;
         card.querySelector(".desc").textContent=p.description;
-        card.querySelector(".lien").href="projet.html?id"+encodeURIComponent(p.id);
         card.querySelector(".btn-delete").dataset.id=p.id;
+        card.querySelector("a").href= "projet.html?"+p.id+"="+encodeURIComponent(p.id);
+        card.querySelector(".btn-show").addEventListener("click",()=>{
+               showData(p);
+        })
         container.appendChild(card);
     }
  
@@ -88,4 +90,36 @@ export function initSttingsDIalog({getkey,saveKey,load}){
         demoCheckbox.checked=false ;
 
     });
+}
+
+export function showData(projet){
+    const section=document.getElementById("details");
+    const h1=document.createElement("h1");
+    h1.textContent=projet.nom;
+    let pragph=document.createElement("p");
+    let tasks=projet.tasks || [];
+    let total=0;
+    let done=0;
+    let inProgres=0;
+    let toDo=0 ;
+
+ 
+            
+        for(let t of tasks){
+            total+=t.estimatedTime
+             if(t==="To Do"){
+                toDo+=1;
+             }else if(t==="Done"){
+                done+=1;
+             }else if(t==="In Progress"){
+                inProgres+=1;
+             }
+        }
+        let totalstatus=done+inProgres+toDo;
+        let donepourcentage=(done/totalstatus)*100;
+        pragph.textContent=projet.duree+"-"+projet.nbDev+"-"+projet.total+"h/"+projet.total+"/h -"+donepourcentage+"% terminee";
+        p.classList.add("")
+        //section.appendchild
+
+    }
 }
