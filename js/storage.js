@@ -24,3 +24,6 @@ export function addProjet(newProjet){
     allProjets.push(newProjet);
     setProjet(allProjets);
 }
+export function removeProjet(id){
+    setProjet(getProjet().filter((p)=>p.id!==id));
+}

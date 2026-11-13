@@ -1,0 +1,310 @@
+{
+  "project": {
+    "nom": "Task Manager Demo",
+    "description": "Application web de gestion de tâches avec tableau Kanban.",
+    "duree": "10",
+    "nbDev": "2",
+    "techno": "HTML, Tailwind CSS, JavaScript",
+    "niveau": "Intermediate",
+    "brief": "Créer une application de gestion de projet avec dashboard, Kanban à trois colonnes, détail et édition des tâches, et sauvegarde locale."
+  },
+  "projectName": "Task Manager Demo",
+  "totalEstimatedHours": 64,
+  "tasks": [
+    {
+      "id": "TASK-001",
+      "title": "Initialize project structure",
+      "description": "Create the folders, HTML pages and ES modules, and set up Tailwind.",
+      "userStories": [
+        "As a developer, I want a clean project structure so that the team can work efficiently."
+      ],
+      "acceptanceCriteria": [
+        "Folders css/js/data exist.",
+        "Pages open without console errors."
+      ],
+      "priority": "Critical",
+      "importance": "High",
+      "size": "XS",
+      "estimatedTime": 2,
+      "deadline": "Day 1",
+      "status": "Done",
+      "dependencies": []
+    },
+    {
+      "id": "TASK-002",
+      "title": "Design UI mockups",
+      "description": "Sketch the dashboard, the creation form and the task board.",
+      "userStories": [
+        "As a user, I want a clear interface so that I can understand the app quickly."
+      ],
+      "acceptanceCriteria": [
+        "Mockups cover the 3 main pages.",
+        "Mockups are validated by the team."
+      ],
+      "priority": "High",
+      "importance": "Medium",
+      "size": "S",
+      "estimatedTime": 4,
+      "deadline": "Day 1",
+      "status": "Done",
+      "dependencies": []
+    },
+    {
+      "id": "TASK-003",
+      "title": "Build header and navigation",
+      "description": "Create the shared header with logo, links and settings access.",
+      "userStories": [
+        "As a user, I want a navigation bar so that I can move between pages."
+      ],
+      "acceptanceCriteria": [
+        "Links work on every page.",
+        "Active page is highlighted."
+      ],
+      "priority": "High",
+      "importance": "Medium",
+      "size": "S",
+      "estimatedTime": 3,
+      "deadline": "Day 2",
+      "status": "In Progress",
+      "dependencies": [
+        "TASK-001"
+      ]
+    },
+    {
+      "id": "TASK-004",
+      "title": "Create the storage module",
+      "description": "Write helpers to read and write projects in localStorage and the API key in sessionStorage.",
+      "userStories": [
+        "As a user, I want my data saved so that I do not lose it after a reload."
+      ],
+      "acceptanceCriteria": [
+        "Projects persist after reload.",
+        "API key is stored in sessionStorage only."
+      ],
+      "priority": "Critical",
+      "importance": "High",
+      "size": "S",
+      "estimatedTime": 4,
+      "deadline": "Day 2",
+      "status": "To Do",
+      "dependencies": [
+        "TASK-001"
+      ]
+    },
+    {
+      "id": "TASK-005",
+      "title": "Create the task board layout",
+      "description": "Build the three-column Kanban (To Do, In Progress, Done).",
+      "userStories": [
+        "As a user, I want to see my tasks in a board so that I can follow the progress of my project."
+      ],
+      "acceptanceCriteria": [
+        "Three columns are displayed.",
+        "Layout is usable on mobile."
+      ],
+      "priority": "High",
+      "importance": "High",
+      "size": "M",
+      "estimatedTime": 6,
+      "deadline": "Day 3",
+      "status": "To Do",
+      "dependencies": [
+        "TASK-002",
+        "TASK-003"
+      ]
+    },
+    {
+      "id": "TASK-006",
+      "title": "Create the task card component",
+      "description": "Render ID, title, priority badge, size badge, estimated time, deadline and dependencies.",
+      "userStories": [
+        "As a user, I want informative cards so that I can understand a task at a glance."
+      ],
+      "acceptanceCriteria": [
+        "Each card shows all required fields.",
+        "Badges use distinct colors."
+      ],
+      "priority": "High",
+      "importance": "High",
+      "size": "M",
+      "estimatedTime": 5,
+      "deadline": "Day 3",
+      "status": "To Do",
+      "dependencies": [
+        "TASK-005"
+      ]
+    },
+    {
+      "id": "TASK-007",
+      "title": "Build the task detail modal",
+      "description": "Open a modal on card click showing description, user stories and acceptance criteria.",
+      "userStories": [
+        "As a user, I want to open a task so that I can read its full details."
+      ],
+      "acceptanceCriteria": [
+        "Modal opens on card click.",
+        "All task fields are displayed."
+      ],
+      "priority": "High",
+      "importance": "High",
+      "size": "M",
+      "estimatedTime": 6,
+      "deadline": "Day 4",
+      "status": "To Do",
+      "dependencies": [
+        "TASK-006"
+      ]
+    },
+    {
+      "id": "TASK-008",
+      "title": "Add task editing",
+      "description": "Allow editing title, description, priority, size, deadline and status, persisted in storage.",
+      "userStories": [
+        "As a user, I want to edit a task so that I can adapt the plan."
+      ],
+      "acceptanceCriteria": [
+        "Edits are saved after reload.",
+        "Invalid values are rejected."
+      ],
+      "priority": "High",
+      "importance": "High",
+      "size": "L",
+      "estimatedTime": 7,
+      "deadline": "Day 5",
+      "status": "To Do",
+      "dependencies": [
+        "TASK-007",
+        "TASK-004"
+      ]
+    },
+    {
+      "id": "TASK-009",
+      "title": "Enforce dependency rule on Done",
+      "description": "Block moving a task to Done when a dependency is not Done and explain why.",
+      "userStories": [
+        "As a user, I want consistent statuses so that the plan stays realistic."
+      ],
+      "acceptanceCriteria": [
+        "Move is blocked with a clear message.",
+        "Move works when all dependencies are Done."
+      ],
+      "priority": "Critical",
+      "importance": "High",
+      "size": "M",
+      "estimatedTime": 5,
+      "deadline": "Day 6",
+      "status": "To Do",
+      "dependencies": [
+        "TASK-008"
+      ]
+    },
+    {
+      "id": "TASK-010",
+      "title": "Implement task deletion",
+      "description": "Delete a task with confirmation and remove it from other tasks' dependencies.",
+      "userStories": [
+        "As a user, I want to delete a task so that I can remove irrelevant work."
+      ],
+      "acceptanceCriteria": [
+        "Confirmation is requested.",
+        "No dependency references the deleted ID."
+      ],
+      "priority": "Medium",
+      "importance": "Medium",
+      "size": "S",
+      "estimatedTime": 4,
+      "deadline": "Day 6",
+      "status": "To Do",
+      "dependencies": [
+        "TASK-008"
+      ]
+    },
+    {
+      "id": "TASK-011",
+      "title": "Dashboard project cards and progress",
+      "description": "Display project cards with task counts and a progress bar computed from statuses.",
+      "userStories": [
+        "As a user, I want to see each project's progress so that I know what remains."
+      ],
+      "acceptanceCriteria": [
+        "Progress = Done / total.",
+        "Empty state message is shown with no project."
+      ],
+      "priority": "High",
+      "importance": "High",
+      "size": "M",
+      "estimatedTime": 5,
+      "deadline": "Day 7",
+      "status": "To Do",
+      "dependencies": [
+        "TASK-004"
+      ]
+    },
+    {
+      "id": "TASK-012",
+      "title": "Responsive design and polish",
+      "description": "Improve spacing, states and mobile behavior across all pages.",
+      "userStories": [
+        "As a user, I want a comfortable interface on any device."
+      ],
+      "acceptanceCriteria": [
+        "Pages are usable at 375px width.",
+        "No horizontal scroll."
+      ],
+      "priority": "Medium",
+      "importance": "Medium",
+      "size": "S",
+      "estimatedTime": 4,
+      "deadline": "Day 8",
+      "status": "To Do",
+      "dependencies": [
+        "TASK-006",
+        "TASK-011"
+      ]
+    },
+    {
+      "id": "TASK-013",
+      "title": "End-to-end testing",
+      "description": "Test the full flow: create, view, edit, move and delete tasks.",
+      "userStories": [
+        "As a user, I want a reliable app so that I can trust my plan."
+      ],
+      "acceptanceCriteria": [
+        "All main flows pass manually.",
+        "No console errors."
+      ],
+      "priority": "High",
+      "importance": "High",
+      "size": "M",
+      "estimatedTime": 6,
+      "deadline": "Day 9",
+      "status": "To Do",
+      "dependencies": [
+        "TASK-009",
+        "TASK-010",
+        "TASK-012"
+      ]
+    },
+    {
+      "id": "TASK-014",
+      "title": "Write documentation and deploy",
+      "description": "Write the README and publish the app on a static host.",
+      "userStories": [
+        "As a team, I want documentation and a live link so that others can use the app."
+      ],
+      "acceptanceCriteria": [
+        "README explains setup and usage.",
+        "App is reachable online."
+      ],
+      "priority": "Medium",
+      "importance": "Medium",
+      "size": "S",
+      "estimatedTime": 3,
+      "deadline": "Day 10",
+      "status": "To Do",
+      "dependencies": [
+        "TASK-013"
+      ]
+    }
+  ]
+}

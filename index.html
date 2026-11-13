@@ -36,7 +36,9 @@
                   <button id="anulerBTn" class="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg font-semibold transition">Annuler</button>
                   <button id="enregistrerBtn" class="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg font-semibold transition">Enregistrer</button>
             </div>
-            
+            <input type="checkbox" id="demoCheckbox" name="demoCheckbox" class="">            <label for="demoCheckbox"> Mode demo </label>
+
+
         </dialog>
         <section id="list-pr">
             <div class="flex justify-between w-full h-20 items-center p-4 ">
@@ -44,8 +46,8 @@
                  <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg font-semibold transition"> <a href="new-projet.html">+ Créer un projet</a>   </button>
             </div>
            
-            <p class="text-center mt-[200px] text-2xl font-bold text-slate-800 mb-3">Aucun projet pour le moment, créez-en un pour générer votre premier plan.</p>
-
+            <p id="msgEmpty" class="text-center mt-[200px] text-2xl font-bold text-slate-800 mb-3">Aucun projet pour le moment, créez-en un pour générer votre premier plan.</p>
+            <div id="projectsList" class="grid p-4 gap-2 md:grid-cols-5 lg:grid-cols-3 "></div>
 
         </section>
     </main>
