@@ -1,9 +1,11 @@
 import { validate } from "./validation.js";
 import { buildPrompt } from "./prompt.js";
-import './settings.js' ;
-import { addProjet } from "./storage.js";
+import { initSttingsDIalog , renderlist } from "./ui.js";
+import { addProjet , getApi , saveApi } from "./storage.js";
 import {callAi} from "./api.js";
 
+initSttingsDIalog({getkey:getApi , saveKey:saveApi ,load:load});
+renderlist();
 // form validation and add a projet , build projet
 let form=document.querySelector("form");
 let btn=document.querySelector('#btnSubmit')
