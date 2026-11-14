@@ -15,7 +15,7 @@ export function renderlist(){
        const done=tasks.filter(t=>t.status==="Done").length;
        const percent=total===0 ? 0 :Math.round((done/total)*100);
        const card=document.createElement("article");
-       card.className="bg-white rounded-xl shadow p-5 border border-slate-200 flex flex-col gap-2";
+       card.className="bg-white rounded-2xl shadow-sm p-6 border border-slate-200  ";
        card.innerHTML=`
            <h2 class="nom text-lg font-bold"></h2>
            <p class="desc text-sm text-slate-500"></p>
@@ -116,7 +116,7 @@ export function showData(projet){
         }
         let totalstatus=done+inProgres+toDo;
         let donepourcentage=(done/totalstatus)*100;
-        pragph.textContent=projet.duree+"-"+projet.nbDev+"-"+total+"h/"+projet.total+"/h -"+donepourcentage+"% terminee";
+        pragph.textContent=projet.duree+" jour-"+projet.nbDev+" dev-"+total+"h/"+total+"h -"+Math.floor(donepourcentage)+"% terminee";
         const parentDiv=document.createElement("div");
         const div1=document.createElement("div");
         const div2=document.createElement("div");
@@ -135,6 +135,8 @@ export function showData(projet){
         const listTaskInprogress=tasks.filter((t)=>t.status==="In Progress");
         const listTaskDone=tasks.filter((t)=>t.status==="Done");
         for(let t of listTaskTodo){
+            const card=document.createElement("div");
+            card.className="bg-gray-100 border border-slate-200 rouned-md p-2.5 shadow-sm  hover:sahdow-md transition-shadow mb-10";
             const p=document.createElement("p");
             p.textContent=t.id;
             const h3=document.createElement("h3");
@@ -147,15 +149,25 @@ export function showData(projet){
             span3.textContent=t.estimatedTime;
              const span4=document.createElement("span");
             span4.textContent=t.deadline;
-            div1.append(p,h3,span1,span2,span3,span4);
-
+            card.append(p,h3,span1,span2,span3,span4)
+            div1.append(card);
             if(t.dependencies.length>0){
                 const depondencies=document.createElement("p");
+                depondencies.className="text-[10px] text-slate-500 mt-1"
                 depondencies.textContent="depend de : "+t.dependencies.join(",");
-                div1.append(depondencies)
+                card.append(depondencies)
             }
+            // css
+            p.className="text-[10px] text-slate-400 font-medium";
+            h3.className="text-xs font-semibold text-slate-800 leading-snug"
+            span1.className="text-[10px] font-medium bg-red-100 text-red-700 rounded px-1.5 py-0.5 w-fit"
+            span2.className="text-[10px]  bg-slate-200 text-slate-600 rounded px-1.5 py-0.5 w-fit"
+            span3.className="text-[10px]  bg-slate-200 text-slate-600 rounded px-1.5 py-0.5 w-fit"
+            span4.className="text-[10px]  bg-slate-200 text-slate-600 rounded px-1.5 py-0.5 w-fit"
         }
         for(let t of listTaskInprogress){
+            const card=document.createElement("div");
+            card.className="bg-gray-100 border border-slate-200 rouned-md p-2.5 shadow-sm   hover:sahdow-md transition-shadow mb-10";
             const p=document.createElement("p");
             p.textContent=t.id;
             const h3=document.createElement("h3");
@@ -168,15 +180,26 @@ export function showData(projet){
             span3.textContent=t.estimatedTime;
              const span4=document.createElement("span");
             span4.textContent=t.deadline;
-            div2.append(p,h3,span1,span2,span3,span4);
-
+            card.append(p,h3,span1,span2,span3,span4)
+            div2.append(card);
             if(t.dependencies.length>0){
                 const depondencies=document.createElement("p");
+                depondencies.className="text-[10px] text-slate-500 mt-1"
                 depondencies.textContent="depend de : "+t.dependencies.join(",");
-                div2.append(depondencies)
+                card.append(depondencies)
             }
+            // css
+            p.className="text-[10px] text-slate-400 font-medium";
+            h3.className="text-xs font-semibold text-slate-800 leading-snug"
+            span1.className="text-[10px] font-medium bg-red-100 text-red-700 rounded px-1.5 py-0.5 w-fit"
+            span2.className="text-[10px]  bg-slate-200 text-slate-600 rounded px-1.5 py-0.5 w-fit"
+            span3.className="text-[10px]  bg-slate-200 text-slate-600 rounded px-1.5 py-0.5 w-fit"
+            span4.className="text-[10px]  bg-slate-200 text-slate-600 rounded px-1.5 py-0.5 w-fit"
+
         }
         for(let t of listTaskDone){
+            const card=document.createElement("div");
+            card.className="bg-gray-100 border border-slate-200 rouned-md p-2.5 shadow-sm hover:sahdow-md transition-shadow mb-10";
             const p=document.createElement("p");
             p.textContent=t.id;
             const h3=document.createElement("h3");
@@ -189,17 +212,38 @@ export function showData(projet){
             span3.textContent=t.estimatedTime;
              const span4=document.createElement("span");
             span4.textContent=t.deadline;
-            div3.append(p,h3,span1,span2,span3,span4);
+            card.append(p,h3,span1,span2,span3,span4)
+            div3.append(card);
 
             if(t.dependencies.length>0){
                 const depondencies=document.createElement("p");
+                depondencies.className="text-[10px] text-slate-500 mt-1"
                 depondencies.textContent="depend de : "+t.dependencies.join(",");
-                div3.append(depondencies)
+                card.append(depondencies)
             }
+            // css
+            p.className="text-[10px] text-slate-400 font-medium";
+            h3.className="text-xs font-semibold text-slate-800 leading-snug"
+            span1.className="text-[10px] font-medium bg-red-100 text-red-700 rounded px-1.5 py-0.5 w-fit"
+            span2.className="text-[10px]  bg-slate-200 text-slate-600 rounded px-1.5 py-0.5 w-fit"
+            span3.className="text-[10px]  bg-slate-200 text-slate-600 rounded px-1.5 py-0.5 w-fit"
+            span4.className="text-[10px]  bg-slate-200 text-slate-600 rounded px-1.5 py-0.5 w-fit"
         }
+        // add css
 
- 
-        
+        parentDiv.classList.add("grid","md:grid-cols-2","lg:grid-cols-3","gap-6","w-full","items-start");
+        h1.classList.add("font-bold","mb-3","text-3xl","text-slate-800");
+        pragph.classList.add("text-sm","text-gray-500","border","border-slate-200","rounded-xl","p-4","mb-8","shadow-sm")
+        section.classList.add("max-w-7xl","mx-auto","px-4","sm:px-6","py-8")
+        div1.className="bg-slate-50 border border-blue-200 rounded-2xl p-5 shadow-sm leading-10 h-fit";
+        div2.className="bg-slate-50 border border-orange-200 rounded-2xl p-5 shadow-sm leading-10 h-fit";
+        div3.className="bg-slate-50 border border-green-200 rounded-2xl p-5 shadow-sm leading-10 h-fit";
+        TodosH2.className="text-lg font-bold text-blue-700 border-blue-200 pb-3"
+        inProgressH2.className="text-lg font-bold text-orange-700 border-orange-200 pb-3"
+        DoneH2.className="text-lg font-bold text-green-700 border-green-200 pb-3"
+
+
+
         parentDiv.append(div1,div2,div3);
         section.append(h1,pragph,parentDiv)
         
