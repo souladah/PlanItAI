@@ -25,17 +25,14 @@ export function renderlist(){
             </div>
             <p class="text-sm font-semibold">${percent}%</p>
             <div class="flex justify-between mt-2">
-             <button type="button" class="btn-show text-blue-600 font-semibold cursor-pointer"><a href="#">show model</a></button>
+            <a href="projet.html?id=${p.id}" class="btn-show text-blue-600 font-semibold">show detail</a>
              <button type="button" class="btn-delete text-red-600 font-semibold cursor-pointer">Supprimer</button>
             </div>
              `;
         card.querySelector(".nom").textContent=p.nom;
         card.querySelector(".desc").textContent=p.description;
         card.querySelector(".btn-delete").dataset.id=p.id;
-        card.querySelector("a").href= "projet.html?"+p.id+"="+encodeURIComponent(p.id);
-        card.querySelector(".btn-show").addEventListener("click",()=>{
-               showData(p);
-        })
+
         container.appendChild(card);
     }
  
@@ -94,6 +91,8 @@ export function initSttingsDIalog({getkey,saveKey,load}){
 
 export function showData(projet){
     const section=document.getElementById("details");
+    if(!section) return ;
+    section.innerHTML="";
     const h1=document.createElement("h1");
     h1.textContent=projet.nom;
     let pragph=document.createElement("p");
@@ -107,19 +106,101 @@ export function showData(projet){
             
         for(let t of tasks){
             total+=t.estimatedTime
-             if(t==="To Do"){
+             if(t.status==="To Do"){
                 toDo+=1;
-             }else if(t==="Done"){
+             }else if(t.status==="Done"){
                 done+=1;
-             }else if(t==="In Progress"){
+             }else if(t.status==="In Progress"){
                 inProgres+=1;
              }
         }
         let totalstatus=done+inProgres+toDo;
         let donepourcentage=(done/totalstatus)*100;
-        pragph.textContent=projet.duree+"-"+projet.nbDev+"-"+projet.total+"h/"+projet.total+"/h -"+donepourcentage+"% terminee";
-        p.classList.add("")
-        //section.appendchild
+        pragph.textContent=projet.duree+"-"+projet.nbDev+"-"+total+"h/"+projet.total+"/h -"+donepourcentage+"% terminee";
+        const parentDiv=document.createElement("div");
+        const div1=document.createElement("div");
+        const div2=document.createElement("div");
+        const div3=document.createElement("div");
 
-    }
+        const TodosH2=document.createElement("h2");
+        const inProgressH2=document.createElement("h2");
+        const DoneH2=document.createElement("h2");
+        TodosH2.textContent="To Do ("+toDo+")";
+        inProgressH2.textContent="inProgres ("+inProgres+")";
+        DoneH2.textContent="Done ("+done+")";
+        div1.appendChild(TodosH2);
+        div2.appendChild(inProgressH2);
+        div3.appendChild(DoneH2);
+        const listTaskTodo=tasks.filter((t)=>t.status==="To Do");
+        const listTaskInprogress=tasks.filter((t)=>t.status==="In Progress");
+        const listTaskDone=tasks.filter((t)=>t.status==="Done");
+        for(let t of listTaskTodo){
+            const p=document.createElement("p");
+            p.textContent=t.id;
+            const h3=document.createElement("h3");
+            h3.textContent=t.title;
+            const span1=document.createElement("span");
+            span1.textContent=t.priority;
+             const span2=document.createElement("span");
+            span2.textContent=t.size;
+             const span3=document.createElement("span");
+            span3.textContent=t.estimatedTime;
+             const span4=document.createElement("span");
+            span4.textContent=t.deadline;
+            div1.append(p,h3,span1,span2,span3,span4);
+
+            if(t.dependencies.length>0){
+                const depondencies=document.createElement("p");
+                depondencies.textContent="depend de : "+t.dependencies.join(",");
+                div1.append(depondencies)
+            }
+        }
+        for(let t of listTaskInprogress){
+            const p=document.createElement("p");
+            p.textContent=t.id;
+            const h3=document.createElement("h3");
+            h3.textContent=t.title;
+            const span1=document.createElement("span");
+            span1.textContent=t.priority;
+             const span2=document.createElement("span");
+            span2.textContent=t.size;
+             const span3=document.createElement("span");
+            span3.textContent=t.estimatedTime;
+             const span4=document.createElement("span");
+            span4.textContent=t.deadline;
+            div2.append(p,h3,span1,span2,span3,span4);
+
+            if(t.dependencies.length>0){
+                const depondencies=document.createElement("p");
+                depondencies.textContent="depend de : "+t.dependencies.join(",");
+                div2.append(depondencies)
+            }
+        }
+        for(let t of listTaskDone){
+            const p=document.createElement("p");
+            p.textContent=t.id;
+            const h3=document.createElement("h3");
+            h3.textContent=t.title;
+            const span1=document.createElement("span");
+            span1.textContent=t.priority;
+             const span2=document.createElement("span");
+            span2.textContent=t.size;
+             const span3=document.createElement("span");
+            span3.textContent=t.estimatedTime;
+             const span4=document.createElement("span");
+            span4.textContent=t.deadline;
+            div3.append(p,h3,span1,span2,span3,span4);
+
+            if(t.dependencies.length>0){
+                const depondencies=document.createElement("p");
+                depondencies.textContent="depend de : "+t.dependencies.join(",");
+                div3.append(depondencies)
+            }
+        }
+
+ 
+        
+        parentDiv.append(div1,div2,div3);
+        section.append(h1,pragph,parentDiv)
+        
 }
