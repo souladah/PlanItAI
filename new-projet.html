@@ -37,7 +37,6 @@
                   <button id="anulerBTn" class="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg font-semibold transition">Annuler</button>
                   <button id="enregistrerBtn" class="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg font-semibold transition">Enregistrer</button>
             </div>
-            <input type="checkbox" id="demoCheckbox" name="demoCheckbox" class="">            <label for="demoCheckbox"> Mode demo </label>
 
             
         </dialog>
@@ -63,11 +62,19 @@
                     <option value="Intermediate">Intermediate</option>
                     <option value="Advanced">Advanced</option>
                 </select> <br>
-                <button type="submit" id="btnSubmit" class="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg font-semibold transition
+                <div class="flex  text-center items-center justify-between">
+
+                
+                <button type="submit" id="btnSubmit" class=" w-[50%] cursor-pointer bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg font-semibold transition
                  disabled:opacity-50 disabled:cursor-not-allowed">
                    envoyer
                 </button>
+                <input type="checkbox" id="demoCheckbox" name="demoCheckbox" class=""><label for="demoCheckbox"> Mode demo </label>
+               </div>
+
             </form>
+           
+            
 
         </section>
     </main>

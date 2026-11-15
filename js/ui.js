@@ -4,6 +4,7 @@ let container=document.getElementById("projectsList");
 let empty=document.getElementById("msgEmpty");
 
 export function renderlist(){
+    
     if(!container || !empty )return ;
     container.innerHTML="";
 
@@ -50,13 +51,12 @@ if(container){
     })
 }
 
-export function initSttingsDIalog({getkey,saveKey,load}){
+export function initSttingsDIalog({getkey,saveKey}){
     let openBtn=document.querySelector("#openSettings");
     let dialog=document.querySelector("dialog")
     let closBTn=document.querySelector("#fermer");
     let input=document.getElementById("token");
     let cancelBtn=document.getElementById("anulerBTn");
-    let demoCheckbox=document.getElementById("demoCheckbox");
 
     openBtn.addEventListener("click",(e)=>{
         e.preventDefault();
@@ -76,20 +76,25 @@ export function initSttingsDIalog({getkey,saveKey,load}){
         if(valeur) saveKey(valeur);
         dialog.close();
     })
+    
+}
+
+export function initDemo(load,redirectTo){
+    const demoCheckbox=document.getElementById("demoCheckbox");
+    if(!demoCheckbox) return ;
+
     demoCheckbox.addEventListener("change", async ()=>{
         if(!demoCheckbox.checked) return ;
         try{
             await load();
-            renderlist();
-            dialog.close();
+            window.location.href=redirectTo
         }catch(error){
             alert(error.message)
+            demoCheckbox.checked=false
         }
-        demoCheckbox.checked=false ;
 
     });
 }
-
 export function showData(projet){
     const section=document.getElementById("details");
     if(!section) return ;

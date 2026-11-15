@@ -1,12 +1,13 @@
 import { validate } from "./validation.js";
 import { buildPrompt } from "./prompt.js";
-import { initSttingsDIalog , renderlist , showData } from "./ui.js";
+import { initSttingsDIalog ,initDemo , renderlist , showData } from "./ui.js";
 import { addProjet , getApi , saveApi , getProjet} from "./storage.js";
 import {callAi} from "./api.js";
 import { load } from "./demo.js";
 
-initSttingsDIalog({getkey:getApi , saveKey:saveApi ,load:load});
+initSttingsDIalog({getkey:getApi , saveKey:saveApi });
 renderlist();
+initDemo(load,"index.html");
 // form validation and add a projet , build projet
 let form=document.querySelector("form");
 let btn=document.querySelector('#btnSubmit')
