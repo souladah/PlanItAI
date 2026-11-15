@@ -28,12 +28,11 @@ export function renderlist(){
             <p class="text-sm font-semibold">${percent}%</p>
             <div class="flex justify-between mt-2">
             <a href="projet.html?id=${p.id}" class="btn-show text-blue-600 font-semibold">show detail</a>
-             <button type="button" class="btn-delete text-red-600 font-semibold cursor-pointer">Supprimer</button>
+             <button type="button" data-id="${p.id}" class="btn-delete text-red-600 font-semibold cursor-pointer">Supprimer</button>
             </div>
              `;
         card.querySelector(".nom").textContent=p.nom;
         card.querySelector(".desc").textContent=p.description;
-        card.querySelector(".btn-delete").dataset.id=p.id;
 
         container.appendChild(card);
     }
