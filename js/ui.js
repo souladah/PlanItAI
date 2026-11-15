@@ -1,19 +1,20 @@
-import { getProjet , removeProjet ,saveApi,getApi } from './storage.js';
-import { load } from './demo.js';
+import { getProjet , removeProjet  } from './storage.js';
+
 let container=document.getElementById("projectsList");
 let empty=document.getElementById("msgEmpty");
 
 export function renderlist(){
     if(!container || !empty )return ;
+    container.innerHTML="";
+
     let projets=getProjet();
 
-    container.innerHTML="";
     empty.classList.toggle("hidden",projets.length>0);
     for (let p of projets){
        const tasks=p.tasks || [];
        const total=tasks.length;
        const done=tasks.filter(t=>t.status==="Done").length;
-       const percent=total===0 ? 0 :Math.round((done/total)*100);
+       const percent=total===0 ? 0 :Math.floor((done/total)*100);
        const card=document.createElement("article");
        card.className="bg-white rounded-2xl shadow-sm p-6 border border-slate-200  ";
        card.innerHTML=`
@@ -59,7 +60,7 @@ export function initSttingsDIalog({getkey,saveKey,load}){
 
     openBtn.addEventListener("click",(e)=>{
         e.preventDefault();
-        input.value=getApi();
+        input.value=getkey();
         dialog.showModal();
     })
     closBTn.addEventListener("click",()=>{
@@ -72,7 +73,7 @@ export function initSttingsDIalog({getkey,saveKey,load}){
 
     enregistrerBtn.addEventListener("click",()=>{
         let valeur=input.value.trim();
-        if(valeur) saveApi(valeur);
+        if(valeur) saveKey(valeur);
         dialog.close();
     })
     demoCheckbox.addEventListener("change", async ()=>{
@@ -97,26 +98,10 @@ export function showData(projet){
     h1.textContent=projet.nom;
     let pragph=document.createElement("p");
     let tasks=projet.tasks || [];
-    let total=0;
-    let done=0;
-    let inProgres=0;
-    let toDo=0 ;
-
- 
-            
-        for(let t of tasks){
-            total+=t.estimatedTime
-             if(t.status==="To Do"){
-                toDo+=1;
-             }else if(t.status==="Done"){
-                done+=1;
-             }else if(t.status==="In Progress"){
-                inProgres+=1;
-             }
-        }
-        let totalstatus=done+inProgres+toDo;
-        let donepourcentage=(done/totalstatus)*100;
-        pragph.textContent=projet.duree+" jour-"+projet.nbDev+" dev-"+total+"h/"+total+"h -"+Math.floor(donepourcentage)+"% terminee";
+    const total=tasks.length;
+    const done=tasks.filter(t=>t.status==="Done").length;
+    const percent=total===0 ? 0 :Math.floor((done/total)*100);
+    pragph.textContent=projet.duree+" jour-"+projet.nbDev+" dev-"+total+"h/"+total+"h -"+percent+"% terminee";
         const parentDiv=document.createElement("div");
         const div1=document.createElement("div");
         const div2=document.createElement("div");
@@ -125,8 +110,8 @@ export function showData(projet){
         const TodosH2=document.createElement("h2");
         const inProgressH2=document.createElement("h2");
         const DoneH2=document.createElement("h2");
-        TodosH2.textContent="To Do ("+toDo+")";
-        inProgressH2.textContent="inProgres ("+inProgres+")";
+        TodosH2.textContent="To Do ("+tasks.filter(t=>t.status==="To Do").length+")";
+        inProgressH2.textContent="inProgres ("+tasks.filter(t=>t.status==="In Progress").length+")";
         DoneH2.textContent="Done ("+done+")";
         div1.appendChild(TodosH2);
         div2.appendChild(inProgressH2);

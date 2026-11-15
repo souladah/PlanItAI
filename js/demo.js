@@ -7,16 +7,17 @@ export   function load(){
         if(!response.ok)throw new Error("Erreur HTTP :"+ response.status);
         return response.json();
       })
-      .then(plan=>{
-        if(getProjet().some(p=>p.id==="demo")) return ;
-         addProjet({
-            id:"demo",
-            ...plan.project,
-            totalEstimatedHours:plan.totalEstimatedHours,
-            tasks:plan.tasks
-         });
-      })
-      .catch(error=>{
+      .then(data=>{
+        for(let plan of data.projects){
+            if(getProjet().some(p=>p.id===plan.id)) continue ;
+            addProjet({
+                id:plan.id,
+                ...plan.project,
+                totalEstimatedHours:plan.totalEstimatedHours,
+                tasks:plan.tasks
+            });
+     
+    } }).catch(error=>{
         throw new Error("impossible de charger le plan "+ error.message);
       });
     
