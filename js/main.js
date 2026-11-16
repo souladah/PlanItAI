@@ -17,7 +17,7 @@ if(form){
         let Estvalide=validate(e.target.id);
         btn.disabled=!Estvalide
     });
-    form.addEventListener("submit",(e)=>{
+    form.addEventListener("submit",async (e)=>{
         e.preventDefault();
         if(validate()===false){
             return ;
@@ -27,16 +27,29 @@ if(form){
         for(let champ of champs){
             projet[champ.id]=champ.value.trim();
         }
-        addProjet(projet);
         let prompt=buildPrompt(projet);
         btn.disabled=true;
         btn.textContent="Generation en cours ..."
-        let data =callAi(prompt);
-        if(callAi(prompt)){
-                btn.textContent="envoyer";
+        try {
+             let data = await callAi(prompt);
+             
+             const plan=JSON.parse(data);
+             projet.id= "task"+Date.now();
+             projet.name=plan.name;
+             projet.totalEstimatedHours=plan.totalEstimatedHours
+             projet.tasks=plan.tasks;
+             delete projet.demoCheckbox ;
+             addProjet(projet);
+             window.location.href="projet.html?id="+projet.id ;
+            }catch(error){
+                alert(error.message);
+                btn.disabled=false;
+                btn.textContent="envoyer"
+
             }
-        console.log(data) ;
+        
     })
+    btn.disabled=true;
 }
 // 
 const details=document.getElementById("details");

@@ -13,13 +13,11 @@ export async function callAi(prompt){// async permet de utiliser await dans cett
             "X-goog-api-key":cle // envoyer cle
         },
         body:JSON.stringify({ // donnee envoyer a ai
-            contents:[
-                {
-                    parts:[{text:prompt}]// gemini doit obligatoirement prend data sous cette form 
-                }
-                    ]
+            contents:[{parts:[{text:prompt}]}] , // gemini doit obligatoirement prend data sous cette form 
+                    generationConfig:{responseMimeType:"application/json"}// forcea gemini de repondre sous format json
         })
-    })
+                    
+    });     
    }catch(error){ // se declanche quand js narive pas a communiquer avec fetch , problem connexion
         throw new Error("impossible de joindre lapi")   
    }
@@ -28,5 +26,5 @@ export async function callAi(prompt){// async permet de utiliser await dans cett
     throw new Error("Erreur HTTP :"+reponse.status);
    }
    let data= await reponse.json();
-   return data
+   return data.candidates[0].content.parts[0].text // chemin d'accès hiérarchique dans la structure JSON de la réponse de l'API Gemini de Google pour récupérer le texte généré par le modèle
 }
