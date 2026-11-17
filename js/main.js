@@ -1,7 +1,7 @@
 import { validate } from "./validation.js";
 import { buildPrompt } from "./prompt.js";
 import { initSttingsDIalog ,initDemo , renderlist , showData } from "./ui.js";
-import { addProjet , getApi , saveApi , getProjet} from "./storage.js";
+import { addProjet , getProjetDemo , getProjetai , getApi , saveApi } from "./storage.js";
 import {callAi} from "./api.js";
 import { load } from "./demo.js";
 
@@ -25,6 +25,7 @@ if(form){
         let champs=form.querySelectorAll("input,textarea,select");
         let projet={};
         for(let champ of champs){
+            if(champ.id==="demoCheckbox") continue ;
             projet[champ.id]=champ.value.trim();
         }
         let prompt=buildPrompt(projet);
@@ -35,11 +36,12 @@ if(form){
              
              const plan=JSON.parse(data);
              projet.id= "task"+Date.now();
-             projet.name=plan.name;
+             projet.name=plan.projectName;
              projet.totalEstimatedHours=plan.totalEstimatedHours
              projet.tasks=plan.tasks;
              delete projet.demoCheckbox ;
-             addProjet(projet);
+             localStorage.setItem("demoChecked","false");
+             addProjet(projet,getProjetai);
              window.location.href="projet.html?id="+projet.id ;
             }catch(error){
                 alert(error.message);
@@ -55,7 +57,8 @@ if(form){
 const details=document.getElementById("details");
 if(details){
     const id=new URLSearchParams (location.search).get("id");
-    const projet=getProjet().find(p=>p.id===id);
+    const list=localStorage.getItem("demoChecked")==="true"?getProjetDemo():getProjetai();
+    const projet=list.find(p=>p.id===id);
     if(projet) showData(projet);
     else details.textContent="page introuvable";
 }

@@ -1,4 +1,4 @@
-import { addProjet, getProjet } from "./storage.js";
+import { addProjet, getProjetDemo } from "./storage.js";
 
 const url="data/data.json"
 export   function load(){
@@ -9,13 +9,13 @@ export   function load(){
       })
       .then(data=>{
         for(let plan of data.projects){
-            if(getProjet().some(p=>p.id===plan.id)) continue ;
+            if(getProjetDemo().some(p=>p.id===plan.id)) continue ;
             addProjet({
                 id:plan.id,
                 ...plan.project,
                 totalEstimatedHours:plan.totalEstimatedHours,
                 tasks:plan.tasks
-            });
+            },getProjetDemo);
      
     } }).catch(error=>{
         throw new Error("impossible de charger le plan "+ error.message);

@@ -1,4 +1,4 @@
-import { getProjet , removeProjet  } from './storage.js';
+import { getProjetDemo , getProjetai , removeProjet  } from './storage.js';
 
 let container=document.getElementById("projectsList");
 let empty=document.getElementById("msgEmpty");
@@ -7,8 +7,7 @@ export function renderlist(){
     
     if(!container || !empty )return ;
     container.innerHTML="";
-
-    let projets=getProjet();
+    let projets=localStorage.getItem("demoChecked")==="true" ? getProjetDemo() : getProjetai();
 
     empty.classList.toggle("hidden",projets.length>0);
     for (let p of projets){
@@ -73,7 +72,9 @@ export function initSttingsDIalog({getkey,saveKey}){
     enregistrerBtn.addEventListener("click",()=>{
         let valeur=input.value.trim();
         if(valeur) saveKey(valeur);
+        localStorage.setItem("demoChecked","false");
         dialog.close();
+        renderlist();
     })
     
 }
@@ -84,6 +85,7 @@ export function initDemo(load,redirectTo){
 
     demoCheckbox.addEventListener("change", async ()=>{
         if(!demoCheckbox.checked) return ;
+        localStorage.setItem("demoChecked","true");
         try{
             await load();
             window.location.href=redirectTo
