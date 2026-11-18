@@ -39,3 +39,9 @@ export function removeProjet(id){
     setProjetai(getProjetai().filter((p)=>p.id!==id));
 
 }
+
+
+export function updateprojet(projet){
+    
+
+}
