@@ -42,7 +42,7 @@ if(form){
              delete projet.demoCheckbox ;
              localStorage.setItem("demoChecked","false");
              addProjet(projet,getProjetai);
-             window.location.href="projet.html?id="+projet.id ;
+             window.location.href="index.html" ;
             }catch(error){
                 alert(error.message);
                 btn.disabled=false;
@@ -56,7 +56,7 @@ if(form){
 // 
 const details=document.getElementById("details");
 if(details){
-    const id=new URLSearchParams (location.search).get("id");
+    const id=new URLSearchParams (location.search).get("id");// prendre id depuis url
     const list=localStorage.getItem("demoChecked")==="true"?getProjetDemo():getProjetai();
     const projet=list.find(p=>p.id===id);
     if(projet) showData(projet);

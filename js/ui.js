@@ -1,4 +1,4 @@
-import { getProjetDemo, getProjetai, removeProjet, setProjetDemo, setProjetai } from './storage.js';
+import { getProjetDemo, getProjetai, removeProjet, setProjetDemo, setProjetai, updateprojet } from './storage.js';
 
 let container = document.getElementById("projectsList");
 let empty = document.getElementById("msgEmpty");
@@ -26,7 +26,7 @@ export function renderlist() {
             </div>
             <p class="text-sm font-semibold">${percent}%</p>
             <div class="flex justify-between mt-2">
-            <a href="projet.html?id=${p.id}" class="btn-show text-blue-600 font-semibold">show detail</a>
+            <a href="Detail-projet.html?id=${p.id}" class="btn-show text-blue-600 font-semibold">show detail</a>
              <button type="button" data-id="${p.id}" class="btn-delete text-red-600 font-semibold cursor-pointer">Supprimer</button>
             </div>
              `;
@@ -73,7 +73,6 @@ export function initSttingsDIalog({ getkey, saveKey }) {
     enregistrerBtn.addEventListener("click", () => {
         let valeur = input.value.trim();
         if (valeur) saveKey(valeur);
-        localStorage.setItem("demoChecked", "false");
         dialog.close();
         renderlist();
     })
@@ -85,8 +84,8 @@ export function initDemo(load, redirectTo) {
     if (!demoCheckbox) return;
 
     demoCheckbox.addEventListener("change", async () => {
-        if (!demoCheckbox.checked) return;
-        localStorage.setItem("demoChecked", "true");
+        if (!demoCheckbox.checked) return;// si est decocher fait rien
+        localStorage.setItem("demoChecked", "true"); // sinon modifier true dans ls
         try {
             await load();
             window.location.href = redirectTo
@@ -133,6 +132,7 @@ export function showData(projet) {
 
             const card = document.createElement("div");
             card.draggable = true;
+            card.dataset.id=t.id;
             card.addEventListener("dragstart", (e) => {
                 e.dataTransfer.setData("text/plain", t.id)
             })
@@ -187,46 +187,49 @@ export function showData(projet) {
 
     // add drang and drop
     [["To Do", div1], ["In Progress", div2], ["Done", div3]].forEach(([st, col]) => {
-        col.classList.add("min-h-40");
-        col.ondragover = e => e.preventDefault();
-        col.ondrop = e => {
-            e.preventDefault();
-            const id = e.dataTransfer.getData("text/plain");
-            let task = tasks.find((t) => String(t.id) === id);
-            if (!task) return;
-            if (st === "Done") {
-                const bloquees = task.dependencies.filter((depId) => {
-                    const dep = tasks.find((t) => t.id === depId);
-                    return dep && dep.status !== "Done";
+     col.classList.add("min-h-40");
 
-                })
-                if (bloquees.length > 0) {
-                    alert("impossible : terminer dabord " + bloquees.join(", "));
-                    return;
+     col.addEventListener("dragover",(e)=>{// jai fait ca pour autoriser le drop de chaque div
+        e.preventDefault();
+     })
 
-                }
+     col.addEventListener("drop",(e)=>{//event responsable de leffect lors du lachement de la carte dans une colone
+        e.preventDefault();
+        const id=e.dataTransfer.getData("text/plain");
+        let task=tasks.find((t)=>String(t.id)===id);
+        if(!task) return;
+        const carteCible=e.target.closest("[data-id]");
+
+        if(carteCible && carteCible.dataset.id===id) return;
+        // maintenat je doit verifier si cette taches depond dune autre et verifie si la cette derniere est done or not pour que je puise lajouter dans done
+        if(st==="Done"){
+            const bloquees=task.dependencies.filter((depId)=>{
+                const dep=tasks.find((t)=>t.id===depId);
+                return dep && dep.status  !=="Done";
+            })
+            if(bloquees.length>0){
+                alert("impossible : termier dabord "+bloquees.join(", "));
+                return;
             }
-            task.status = st
-            // je doit maintennant verifier si je suis dans mode ai ou demo
-
-            const demo = localStorage.getItem("demoChecked") === "true";// si est true va returner true sinon flase
-
-            const projets = demo ? getProjetDemo() : getProjetai();
-            // je doit ajouter le projet dans local storage avec les nouveaux modifications
-            const index = projets.findIndex((p) => p.id === projet.id)// projet cest le projet que la foction showdata prend par parametre
-
-            if (index !== -1) {// atrouver 1 , 2, 0.....
-                // mainteant je doit remplacer le projet par projet actuelle
-                projets[index] = projet;
-                if (demo) {
-                    setProjetDemo(projets)
-                } else {
-                    setProjetai(projets)
-                }
-            }
-
-            showData(projet)
         }
-    });
+        task.status=st;
+        tasks.splice(tasks.indexOf(task),1);
+
+        if(carteCible){
+            const idCible=carteCible.dataset.id;
+            const positionCible=tasks.findIndex((t)=>String(t.id)===idCible);
+            tasks.splice(positionCible,0,task);
+        }else{
+            tasks.push(task);
+        }
+        updateprojet(projet);
+        showData(projet);
+     })
+    
+    })
+
+
 
 }
+
+/// je doit ajouter crud pour chaque plannifiaction et ses taches , button de ai qui affiche les ai . 

@@ -1,6 +1,6 @@
 import { addProjet, getProjetDemo } from "./storage.js";
 
-const url="data/data.json"
+const url="data/data.json";
 export   function load(){
     return fetch(url)
       .then(response=>{

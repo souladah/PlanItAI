@@ -42,6 +42,17 @@ export function removeProjet(id){
 
 
 export function updateprojet(projet){
-    
+    const demo=localStorage.getItem("demoChecked")==="true";
+    const projets=demo?getProjetDemo():getProjetai();
+    const index=projets.findIndex((p)=>p.id===projet.id);
+    if(index!==-1){
+        projets[index]=projet;
+        if(demo){
+            setProjetDemo(projets);
+        }else{
+            setProjetai(projets)
+        }
+
+    }
 
 }
