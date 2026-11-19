@@ -44,6 +44,76 @@
         
 
         </section>
+        <dialog id="update-dialog" class="relativ w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl p-8 shadow-xl backdrop:bg-black/50 m-auto">
+                <button type="button" id="clos-update" class="absolute top-4 right-5 text-slate-400 hover:text-slate-700 cursor-pointer text-xl">✕</button>
+            <form id="form-update"  class="flex flex-col gap-2" novalidate>
+                <label for="u-nom">nom :</label> 
+                <input type="text" id="u-nom"  name="u-nom" placeholder="entrer le nom de votre projet" class="w-full border-2   border-gray-400 rounded-lg p-2 focus:border-sky-500 focus:outline-none">
+                <label for="u-description">description :</label>
+                <input type="text" id="u-description"  name="u-description" placeholder="Entrer la description du projet" class="w-full border-2   border-gray-400 rounded-lg p-2 focus:border-sky-500 focus:outline-none">
+                <label for="u-duree">durée du projet :</label>
+                <input type="number" id="u-duree" name="u-duree" class="w-full border-2   border-gray-400 rounded-lg p-2 focus:border-sky-500 focus:outline-none">
+                <label for="u-nbDev">nombre de développeurs :</label>
+                <input type="number" id="u-nbDev" name="u-nbDev" class="w-full border-2   border-gray-400 rounded-lg p-2 focus:border-sky-500 focus:outline-none">
+                <label for="u-techno">technologies :</label>
+                <input type="text" id="u-techno" name="u-techno" placeholder="technologies" class="w-full border-2   border-gray-400 rounded-lg p-2 focus:border-sky-500 focus:outline-none">
+                <label for="u-brief">brief-complet :</label>
+                <textarea name="u-brief"  id="u-brief" class="w-full border-2   border-gray-400 rounded-lg p-2 focus:border-sky-500 focus:outline-none"></textarea>
+                <label for="u-niveau">niveau de difficulté :</label>
+                <select name="u-niveau" id="u-niveau" class="w-full border-2   border-gray-400 rounded-lg p-2 focus:border-sky-500 focus:outline-none">
+                    <option value=""></option>
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                </select> 
+
+                <h3 class="text-lg font-bold text-slate-800 mt-6 pt-4  border-t border-slate-200">Les infos du tache</h3>
+
+                <label for="id-tache" >id :</label>
+                <input id="id-tache" type="text" name="id-tache" class="w-full border-2 border-gray-400 rounded-lg p-2 focus:border-sky-500 focus:outline-none">
+
+                <label for="nom-tache">nom :</label>
+                <input id="nom-tache" type="text" name="nom-tache" class="w-full border-2 border-gray-400 rounded-lg p-2 focus:border-sky-500 focus:outline-none">
+
+                <label for="acceptanceCriteria" >acceptanceCriteria :</label>
+                <input name="acceptanceCriteria" id="acceptanceCriteria" class="w-full border-2 border-gray-400 rounded-lg p-2 focus:border-sky-500 focus:outline-none">
+
+                
+
+                <label for="t-priority" >priority :</label>
+                <input id="t-priority" type="text" name="t-priority" class="w-full border-2 border-gray-400 rounded-lg p-2 focus:border-sky-500 focus:outline-none">
+
+                <label for="importance">importance :</label>
+                <input type="text" name="importance" id="importance" class="w-full border-2 border-gray-400 rounded-lg p-2 focus:border-sky-500 focus:outline-none">
+
+                
+                <label for="size" >size :</label>
+                <input type="text" id="size" name="size" class="w-full border-2 border-gray-400 rounded-lg p-2 focus:border-sky-500 focus:outline-none">
+
+                <label for="estimatedTime" >estimatedTime :</label>
+                <input type="number" id="estimatedTime" name="estimatedTime" class="w-full border-2 border-gray-400 rounded-lg p-2 focus:border-sky-500 focus:outline-none">
+
+                
+                <label for="deadline" >deadline :</label>
+                <input type="text"  id="deadline" name="deadline" class="w-full border-2 border-gray-400 rounded-lg p-2 focus:border-sky-500 focus:outline-none">
+
+                <label for="status" >status :</label>
+                <select type="text" id="status" name="deadline" class="w-full border-2 border-gray-400 rounded-lg p-2 focus:border-sky-500 focus:outline-none">
+                     <option value="To Do">To Do</option>
+                     <option value="In Progress">In Progress</option>
+                     <option value="Done">Done</option>
+                </select>
+
+                <label for="dependencies" >dependencies :</label>
+                <input name="dependencies" id="dependencies" multiple class="w-full border-2 border-gray-400 rounded-lg p-2 focus:border-sky-500 focus:outline-none">
+                     
+
+                <button id="anulerBTn" class="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg font-semibold transition">Annuler</button>
+                <button id="enregistrerBtn" class="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg font-semibold transition">Enregistrer</button>
+
+            </form>
+
+        </dialog>
     </main>
 
 </body>

@@ -9,7 +9,7 @@ initSttingsDIalog({getkey:getApi , saveKey:saveApi });
 renderlist();
 initDemo(load,"index.html");
 // form validation and add a projet , build projet
-let form=document.querySelector("form");
+let form=document.querySelector("#form");
 let btn=document.querySelector('#btnSubmit')
 if(form){
 
@@ -62,3 +62,4 @@ if(details){
     if(projet) showData(projet);
     else details.textContent="page introuvable";
 }
+

@@ -41,7 +41,7 @@ export function renderlist() {
 
 if (container) {
     container.addEventListener("click", (e) => {
-        const btn = e.target.closest(".btn-delete");
+        const btn =e.target.closest("button") ;// cherche le plus proche element qui a .btn-delete
         if (!btn) return;
         if (confirm("Supprimer ce projet ?")) {
             removeProjet(btn.dataset.id);
@@ -52,10 +52,11 @@ if (container) {
 
 export function initSttingsDIalog({ getkey, saveKey }) {
     let openBtn = document.querySelector("#openSettings");
-    let dialog = document.querySelector("dialog")
+    let dialog = document.querySelector("#settingDialogue")
     let closBTn = document.querySelector("#fermer");
     let input = document.getElementById("token");
     let cancelBtn = document.getElementById("anulerBTn");
+    
 
     openBtn.addEventListener("click", (e) => {
         e.preventDefault();
@@ -127,11 +128,24 @@ export function showData(projet) {
     const listTaskDone = tasks.filter((t) => t.status === "Done");
     const list = [listTaskTodo, listTaskInprogress, listTaskDone]
     const colones = [div1, div2, div3];
+    const DialogUpdate=document.getElementById("update-dialog");
+    const closUpdate=document.getElementById("clos-update");
+    closUpdate.addEventListener("click",()=>{
+         DialogUpdate.close();
+    })
     for (let i = 0; i < list.length; i++) {//boucle pour les colone
         for (let t of list[i]) {// boucle sur chaque list des taches 
 
             const card = document.createElement("div");
             card.draggable = true;
+
+            card.addEventListener("click",()=>{
+                 DialogUpdate.showModal();
+                 RemplirDialogueInput(t,projet);
+            });
+            
+
+
             card.dataset.id=t.id;
             card.addEventListener("dragstart", (e) => {
                 e.dataTransfer.setData("text/plain", t.id)
@@ -157,6 +171,7 @@ export function showData(projet) {
                 depondencies.textContent = "depend de : " + t.dependencies.join(",");
                 card.append(depondencies)
             }
+            // je doit ajouter button supprime avec confirm
             // css
             p.className = "text-[10px] text-slate-400 font-medium";
             h3.className = "text-xs font-semibold text-slate-800 leading-snug"
@@ -198,9 +213,9 @@ export function showData(projet) {
         const id=e.dataTransfer.getData("text/plain");
         let task=tasks.find((t)=>String(t.id)===id);
         if(!task) return;
-        const carteCible=e.target.closest("[data-id]");
+        const carteCible=e.target.closest("[data-id]"); // return plus proche parennt de element quia atribut data-id
 
-        if(carteCible && carteCible.dataset.id===id) return;
+        if(carteCible && carteCible.dataset.id===id) return; // si a crt cibler est la meme carte deplacer
         // maintenat je doit verifier si cette taches depond dune autre et verifie si la cette derniere est done or not pour que je puise lajouter dans done
         if(st==="Done"){
             const bloquees=task.dependencies.filter((depId)=>{
@@ -213,7 +228,8 @@ export function showData(projet) {
             }
         }
         task.status=st;
-        tasks.splice(tasks.indexOf(task),1);
+        let index=tasks.indexOf(task)
+        tasks.splice(index,1);// supprimer de index un element
 
         if(carteCible){
             const idCible=carteCible.dataset.id;
@@ -232,4 +248,28 @@ export function showData(projet) {
 
 }
 
-/// je doit ajouter crud pour chaque plannifiaction et ses taches , button de ai qui affiche les ai . 
+function RemplirDialogueInput(task,projet){
+   document.getElementById("u-nom").value=projet.nom;
+   document.getElementById("u-description").value=projet.description;
+   document.getElementById("u-duree").value=projet.duree;
+   document.getElementById("u-nbDev").value=projet.nbDev;
+   document.getElementById("u-techno").value=projet.techno;
+   document.getElementById("u-brief").value=projet.brief;
+   document.getElementById("u-niveau").value=projet.niveau;
+
+   document.getElementById("id-tache").value=task.id;
+   document.getElementById("nom-tache").value=task.title;
+   document.getElementById("acceptanceCriteria").value=task.acceptanceCriteria.join("\n");
+   document.getElementById("t-priority").value=task.priority;
+   document.getElementById("importance").value=task.importance;
+   document.getElementById("size").value=task.size;
+   document.getElementById("estimatedTime").value=task.estimatedTime;
+   document.getElementById("deadline").value=task.deadline;
+   document.getElementById("status").value=task.status;
+   document.getElementById("dependencies").value=task.dependencies.length>0 ? task.dependenciesjoin("\n"):"aucune dependance";
+
+
+// enregistrer update les champ where id=id corespond
+            
+}
+/// je doit ajouter crud pour chaque plannifiaction et ses taches , button de ai qui affiche les ai a la place de checbox . // button de retour qui retour a la page precedente
