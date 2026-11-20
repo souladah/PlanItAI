@@ -1,6 +1,6 @@
 import { validate } from "./validation.js";
 import { buildPrompt } from "./prompt.js";
-import { initSttingsDIalog ,initDemo , renderlist , showData } from "./ui.js";
+import { initSttingsDIalog ,initDemo , initDialogs , renderlist , showData } from "./ui.js";
 import { addProjet , getProjetDemo , getProjetai , getApi , saveApi } from "./storage.js";
 import {callAi} from "./api.js";
 import { load } from "./demo.js";
@@ -59,7 +59,10 @@ if(details){
     const id=new URLSearchParams (location.search).get("id");// prendre id depuis url
     const list=localStorage.getItem("demoChecked")==="true"?getProjetDemo():getProjetai();
     const projet=list.find(p=>p.id===id);
-    if(projet) showData(projet);
+    if(projet) {
+        initDialogs();
+        showData(projet);
+    }
     else details.textContent="page introuvable";
 }
 

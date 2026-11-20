@@ -46,7 +46,7 @@ export function renderlist() {
 
 if (container) {
     container.addEventListener("click", (e) => {
-        const btn =e.target.closest("button") ;// cherche le plus proche element qui a .btn-delete
+        const btn =e.target.closest(".btn-delete") ;// cherche le plus proche element qui a .btn-delete
         if (!btn) return;
         if (confirm("Supprimer ce projet ?")) {
             removeProjet(btn.dataset.id);
@@ -136,7 +136,7 @@ function creerCarte(t){
     card.addEventListener("dragstart",(e)=>{
         e.dataTransfer.setData("text/plain",t.id);
     })
-    card.addEventListener("click",()=>ouvrirDialogtache(t));
+    card.addEventListener("click",()=>ouvrirDialogTache(t));
 
     const p=document.createElement("p");
     p.textContent=t.id;
@@ -166,7 +166,7 @@ function creerCarte(t){
 }
 
 function activerDrop(col,status,tasks,projet){
-    col.addEventListener("dargover",(e)=>{
+    col.addEventListener("dragover",(e)=>{
         e.preventDefault();
     });
     col.addEventListener("drop",(e)=>{
@@ -177,7 +177,7 @@ function activerDrop(col,status,tasks,projet){
     
         const carteCible=e.target.closest("[data-id]");
         if(carteCible && carteCible.dataset.id===id) return;
-        if(status="Done"){
+        if(status==="Done"){
             const bloquees=bloqueesPar(task.dependencies || [],tasks);
             if(bloquees.length>0){
                 alert("Impossible : terminer d abord"+bloquees.join(", "));
@@ -233,7 +233,7 @@ export function showData(projet) {
     col.className="bg-slate-50 border "+s.bordure+ " rounded-2xl p-5 shadow-sm h-fit min-h-40";
 
     const h2=document.createElement("h2");
-    h2.textContent=s.nom+" ("+liste.length+" )";
+    h2.textContent=s.nom+" ("+liste.length+")";
     h2.className="text-lg font-bold mb-3 "+s.titre;
     col.append(h2);
     for(let t of liste) col.append(creerCarte(t));
@@ -245,50 +245,60 @@ export function showData(projet) {
 
 }
 
+export function initDialogs(){
+    const dialogTache=document.getElementById("update-dialog");
+    const dialogProjet=document.getElementById("update-projet-dialog");
 
-function updatetache(tache){
- 
- const formulaireUpdate=document.getElementById("form-update");
- formulaireUpdate.querySelectorAll(".erreur").forEach((e)=>{
-    e.remove();
- })
- formulaireUpdate.addEventListener("input",(e)=>{
-  e.preventDefault();
-  validatetache(e.target.value);
- })
- formulaireUpdate.addEventListener("submit",(e)=>{
-    e.preventDefault();
-    if(validate(tache.id)){
-            let updatedTache={};
+    document.getElementById("clos-update").addEventListener("click",()=>dialogTache.close());
+    document.getElementById("btnanluer").addEventListener("click",()=>dialogTache.close());
+    document.getElementById("clos-update-projet").addEventListener("click",()=>dialogProjet.close());
+    document.getElementById("btnanluer-projet").addEventListener("click",()=>dialogProjet.close());
 
-   updatedTache.id=tache.id;
-   updatedTache.title=document.getElementById("nom-tache").value;
-   updatedTache.acceptanceCriteria=document.getElementById("acceptanceCriteria").value;
-   updatedTache.priority=document.getElementById("t-priority").value;
-   updatedTache.importance=document.getElementById("importance").value;
-   updatedTache.size=document.getElementById("size").value;
-   updatedTache.estimatedTime=document.getElementById("estimatedTime").value;
-   updatedTache.deadline=document.getElementById("deadline").value;
-   updatedTache.status=document.getElementById("status").value;
-   updatedTache.dependencies=document.getElementById("dependencies").value=task.dependencies.length>0 ? task.dependenciesjoin("\n"):"aucune dependance";
-// verification du dependance
-   if(updatedTache.status==="Done"){
-            const bloquees=task.dependencies.filter((depId)=>{
-                const dep=tasks.find((t)=>t.id===depId);
-                return dep && dep.status  !=="Done";
-            })
-            if(bloquees.length>0){
-                alert("impossible : termier dabord "+bloquees.join(", "));
+    const formTache=document.getElementById("form-update");
+
+    formTache.addEventListener("input",(e)=>{
+        validatetache(e.target.id);
+    });
+
+    formTache.addEventListener("submit",(e)=>{
+        e.preventDefault();
+        if(!validatetache()) return;
+        
+        const tasks=projetCourant.tasks;
+        const deps=document.getElementById("dependencies").value.split(/[\s,;]+/).filter(boolean);
+        const statut=document.getElementById("status").value;
+
+        for(let d of deps){
+            if(d===tacheCourant.id || !tasks.somme((t)=>t.id===d)){
+                alert("Dependance invalide :"+d);
                 return;
             }
-    }
-    Object.assign(tacheCourant,updatedTache)
-    updateprojet(projetCourant)
-    document.getElementById("update-dialog").close()
-    showData()
- }})
+        }
 
+        if(statut==="Done"){
+            const bloquees=bloqueesPar(deps,tasks);
+            if(bloquees.length>0){
+                alert("Impossible : terminer d abord "+bloquees.join(", "));
+                return;
+            }
+        }
+        Object.assign(tacheCourant, {
+            title:document.getElementById("nom-tache").value.trim(),
+            acceptanceCriteria:document.getElementById("acceptanceCriteria").value.split("\n").map((l)=>l.trim()).filter(boolean),
+            priority:document.getElementById("t-priority").value,
+            importance:document.getElementById("importance").value,
+            size:document.getElementById("size").value,
+            estimatedTime:Number(document.getElementById("estimatedTime").value),
+            deadline:document.getElementById("deadline").value.trim(),
+            status:statut,
+            dependencies:deps
+        })
+        updateprojet(projetCourant);
+        dialogTache.close();
+        showData(projetCourant);
+    });
 }
+
 
 
 /// je doit ajouter crud pour chaque plannifiaction et ses taches , button de ai qui affiche les ai a la place de checbox . // button de retour qui retour a la page precedente
