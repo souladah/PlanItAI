@@ -102,6 +102,100 @@ export function initDemo(load, redirectTo) {
 
     });
 }
+
+function bloqueesPar(dependencies,tasks){
+    return dependencies.filter((depId)=>{
+        const dep=tasks.find((t)=>t.id===depId);
+        return dep && dep.status !=="Done";
+    })
+}
+function ouvrirDialogTache(task){
+    tacheCourant=task;
+    const dialog=document.getElementById("update-dialog");
+    dialog.querySelectorAll(".erreur").forEach((e)=>e.remove());
+
+    document.getElementById("nom-tache").value=task.title;
+    document.getElementById("acceptanceCriteria").value=(task.acceptanceCriteria || []).join("\n");
+    document.getElementById("t-priority").value=task.priority;
+   document.getElementById("importance").value=task.importance;
+   document.getElementById("size").value=task.size;
+   document.getElementById("estimatedTime").value=task.estimatedTime;
+   document.getElementById("deadline").value=task.deadline;
+   document.getElementById("status").value=task.status;
+   document.getElementById("dependencies").value=(task.dependencies || []).join(", ");
+   dialog.showModal();
+}
+
+function creerCarte(t){
+    const deps=t.dependencies || [];
+
+    const card=document.createElement("div");
+    card.draggable=true ;
+    card.dataset.id=t.id;
+    card.className="bg-gray-100 border border-slate-200 rounded-md p-2.5 shadow-sm hover:shadow-md mb-3 cursor-pointer";
+    card.addEventListener("dragstart",(e)=>{
+        e.dataTransfer.setData("text/plain",t.id);
+    })
+    card.addEventListener("click",()=>ouvrirDialogtache(t));
+
+    const p=document.createElement("p");
+    p.textContent=t.id;
+    p.className="text-[10px] text-slate-400 font-medium";
+
+    const h3=document.createElement("h3");
+    h3.textContent=t.title;
+    h3.className="text-xs font-semibold text-slate-800 leading-snug";
+    
+    const badges=document.createElement("div");
+    badges.className="flex flex-wrap gap-1 mt-1";
+    for(let texte of[t.priority,t.size,t.estimatedTime+" h",t.deadline]){
+        const span=document.createElement("span");
+        span.textContent=texte;
+        span.className="text-[10px] bg-slate-200 text-slate-600 rounded px-1.5 py-0.5";
+        badges.append(span);
+    }
+    card.append(p,h3,badges);
+
+    if(deps.length>0){
+        const pDeps=document.createElement("p");
+        pDeps.className="text-[10px] text-slate-500 mt-1";
+        pDeps.textContent="depend de : "+ deps.join(", ");
+        card.append(pDeps);
+    }
+    return card;
+}
+
+function activerDrop(col,status,tasks,projet){
+    col.addEventListener("dargover",(e)=>{
+        e.preventDefault();
+    });
+    col.addEventListener("drop",(e)=>{
+        e.preventDefault();
+        const id=e.dataTransfer.getData("text/plain");
+        const task=tasks.find((t)=>t.id===id);
+        if(!task) return;
+    
+        const carteCible=e.target.closest("[data-id]");
+        if(carteCible && carteCible.dataset.id===id) return;
+        if(status="Done"){
+            const bloquees=bloqueesPar(task.dependencies || [],tasks);
+            if(bloquees.length>0){
+                alert("Impossible : terminer d abord"+bloquees.join(", "));
+                return;
+            }
+        }
+        task.status=status;
+        tasks.splice(tasks.indexOf(task),1);
+        if(carteCible){
+            const position=tasks.findIndex((t)=>t.id===carteCible.dataset.id);
+            tasks.splice(position,0,task);
+        }else{
+            tasks.push(task);
+        }
+        updateprojet(projet);
+        showData(projet);
+    });
+}
 export function showData(projet) {
     projetCourant=projet;
     const section = document.getElementById("details");
@@ -123,27 +217,27 @@ export function showData(projet) {
 
     const infos=document.createElement("p");
     infos.textContent=projet.duree+" jours -"+projet.nbDev+" dev -"+heuresFaite+"h/"+heuresTotal+"h -"+percent+"% terminee";
-    infos.textContent="text-sm text-gray-500 border border-slate-200 rounded-xl p-4 mb-8 shadow-sm"
+    infos.className="text-sm text-gray-500 border border-slate-200 rounded-xl p-4 mb-8 shadow-sm"
    
-  const parentDiv=document.createElement("p");
+  const parentDiv=document.createElement("div");
   parentDiv.className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 w-full items-start";
   const status=[
     {nom:"To Do",bordure:"border-blue-200",titre:"text-blue-700"},
     {nom:"In Progress",bordure:"border-orange-200",titre:"text-orange-700"},
-    {nom:"To Do",bordure:"border-green-200",titre:"text-green-700"},
+    {nom:"Done",bordure:"border-green-200",titre:"text-green-700"},
   ]
 
   for(let s of status){
     const liste=tasks.filter(t=>t.status===s.nom);
     const col=document.createElement("div");
-    col.className="bg-slate-50 border"+s.bordure+ " rounded-2xl p-5 shadow-sm h-fit min-h-40";
+    col.className="bg-slate-50 border "+s.bordure+ " rounded-2xl p-5 shadow-sm h-fit min-h-40";
 
     const h2=document.createElement("h2");
     h2.textContent=s.nom+" ("+liste.length+" )";
     h2.className="text-lg font-bold mb-3 "+s.titre;
     col.append(h2);
     for(let t of liste) col.append(creerCarte(t));
-    activerDrop(col,s.nom,task,projet);
+    activerDrop(col,s.nom,tasks,projet);
     parentDiv.append(col);
   }
   section.className="max-w-7xl mx-auto px-4 sm:px-6 py-8";
@@ -151,19 +245,6 @@ export function showData(projet) {
 
 }
 
-function RemplirDialogueTask(task){
-   
-   document.getElementById("nom-tache").value=task.title;
-   document.getElementById("acceptanceCriteria").value=task.acceptanceCriteria.join("\n");
-   document.getElementById("t-priority").value=task.priority;
-   document.getElementById("importance").value=task.importance;
-   document.getElementById("size").value=task.size;
-   document.getElementById("estimatedTime").value=task.estimatedTime;
-   document.getElementById("deadline").value=task.deadline;
-   document.getElementById("status").value=task.status;
-   document.getElementById("dependencies").value=task.dependencies.join("\n");
-       
-}
 
 function updatetache(tache){
  
