@@ -29,6 +29,8 @@ export function validate(id){
 
 const tacheRules = [
     { id: "nom-tache", regex: /^.{3,100}$/,   message: "Le titre doit contenir entre 3 et 100 caracteres." },
+    { id: "dec-tache", regex: /^.{10,200}$/,   message: "La description doit contenir entre 10 et 200 caractères." },
+    {id:"userStories", regex:/\S/, message:"Ajoutez au moins une user story (une par ligne)."},
     { id: "acceptanceCriteria",       regex: /\S/, message: "Ajoutez au moins un critère (un par ligne)." },
     { id: "t-priority",       regex: /^(Low|Medium|High|Critical)$/,    message: "Priorité : Low, Medium, High ou Critical." },
     { id: "importance",       regex: /^(Low|Medium|High)$/,    message: "Importance : Low, Medium ou High." },

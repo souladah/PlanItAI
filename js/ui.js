@@ -144,6 +144,8 @@ function ouvrirDialogTache(task){
     dialog.querySelectorAll(".erreur").forEach((e)=>e.remove());
 
     document.getElementById("nom-tache").value=task.title;
+    document.getElementById("dec-tache").value=task.description ;
+    document.getElementById("userStories").value=(task.userStories).join("\n");
     document.getElementById("acceptanceCriteria").value=(task.acceptanceCriteria || []).join("\n");
     document.getElementById("t-priority").value=task.priority;
    document.getElementById("importance").value=task.importance;
@@ -243,6 +245,12 @@ export function showData(projet) {
     const h1 = document.createElement("h1");
     h1.textContent = projet.nom;
     h1.className="font-bold text-3xl text-slate-800";
+    
+    
+    const desc=document.createElement("p");
+    desc.textContent=projet.description;
+    desc.className="text-slate-600 mb-3";
+
 
     const infos=document.createElement("p");
     infos.textContent=projet.duree+" jours -"+projet.nbDev+" dev -"+heuresFaite+"h/"+heuresTotal+"h -"+percent+"% terminee";
@@ -278,7 +286,7 @@ export function showData(projet) {
   btnModifier.className="cursor-pointer bg-blue-600 hover:bg-blue-700  text-white px-4 py-2 rounded-lg font-semibold";
   btnModifier.addEventListener("click",ouvrirDialogProjet);
   haut.append(h1,btnModifier);
-  section.append(haut,infos,parentDiv);
+  section.append(haut,desc,infos,parentDiv);
 }
 const champsProjet=["nom","description","duree","nbDev","techno","brief","niveau"];
 
@@ -329,6 +337,8 @@ export function initDialogs(){
         }
         Object.assign(tacheCourant, {
             title:document.getElementById("nom-tache").value.trim(),
+            description:document.getElementById("dec-tache").value,
+            userStories:document.getElementById("userStories").value.split("\n").map((l)=>l.trim()).filter(Boolean),
             acceptanceCriteria:document.getElementById("acceptanceCriteria").value.split("\n").map((l)=>l.trim()).filter(Boolean),
             priority:document.getElementById("t-priority").value,
             importance:document.getElementById("importance").value,
