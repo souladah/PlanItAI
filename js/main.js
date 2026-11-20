@@ -26,7 +26,6 @@ if(form){
         let champs=form.querySelectorAll("input,textarea,select");
         let projet={};
         for(let champ of champs){
-            if(champ.id==="demoCheckbox") continue ;
             projet[champ.id]=champ.value.trim();
         }
         let prompt=buildPrompt(projet);

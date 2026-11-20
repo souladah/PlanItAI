@@ -45,7 +45,7 @@ export function renderlist() {
 }
 export function initModeButton(load){
     const btn=document.getElementById("btnMode");
-    if(!!btn) return ;
+    if(!btn) return ;
 
     function majTexte(){
         btn.textContent=modeDemo()?"Voir mes projet IA" :"voir la demo";
@@ -66,7 +66,7 @@ export function initModeButton(load){
             }
         }
         majTexte();
-        renderlist;
+        renderlist();
     });
 }
 if (container) {
@@ -111,18 +111,22 @@ export function initSttingsDIalog({ getkey, saveKey }) {
 }
 
 export function initDemo(load, redirectTo) {
-    const demoCheckbox = document.getElementById("demoCheckbox");
-    if (!demoCheckbox) return;
+    const btnDemo = document.getElementById("btnDemo");
+    if (!btnDemo) return;
 
-    demoCheckbox.addEventListener("change", async () => {
-        if (!demoCheckbox.checked) return;// si est decocher fait rien
-        localStorage.setItem("demoChecked", "true"); // sinon modifier true dans ls
-        try {
+    btnDemo.addEventListener("click", async () => {
+        const texte=btnDemo.textContent;
+        btnDemo.disabled=true;
+        btnDemo.texte="Chargement ...";
+        try{
             await load();
-            window.location.href = redirectTo
+            localStorage.setItem("demoChecked","true");
+            window.location.href=redirectTo
+        
         } catch (error) {
             alert(error.message)
-            demoCheckbox.checked = false
+            btnDemo.disabled = false;
+            btnDemo.textContent=texte;
         }
 
     });
@@ -368,6 +372,3 @@ export function initDialogs(){
         showData(projetCourant);
     });
 }
-
-
-
