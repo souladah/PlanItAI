@@ -297,6 +297,19 @@ export function initDialogs(){
         dialogTache.close();
         showData(projetCourant);
     });
+
+    document.getElementById("supprmier").addEventListener("click",()=>{
+        if(!confirm("supprimer cette tache ?")) return;
+        const idSupprime=tacheCourant.id;
+
+        projetCourant.tasks=projetCourant.tasks.filter((t)=>t.id!== idSupprime);
+        for(let t of projetCourant.tasks){
+            t.dependencies=(t.dependencies || []).filter((d)=>d!==idSupprime);
+        }
+        updateprojet(projetCourant);
+        dialogTache.close();
+        showData(projetCourant);
+    });
 }
 
 
