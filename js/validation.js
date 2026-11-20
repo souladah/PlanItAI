@@ -28,15 +28,15 @@ export function validate(id){
 }
 
 const tacheRules = [
-    { id: "nom-tache", regex: /^.{3,100}$/,   message: "La description doit contenir entre 10 et 200 caractères." },
-    { id: "acceptanceCriteria",       regex: /\S$/, message: "Le brief doit contenir au moins 30 caractères." },
-    { id: "t-priority",       regex: /^(Low|Medium|High|Critical)$/,    message: "La durée doit être un entier supérieur ou égal à 1." },
-    { id: "importance",       regex: /^(Low|Medium|High)$/,    message: "Le nombre de développeurs doit être un entier supérieur ou égal à 1." },
-    { id: "size",        regex: /^(XS|S|M|L|XL)$/,    message: "Le nombre de développeurs doit être un entier supérieur ou égal à 1." },
-    { id: "estimatedTime",  regex : /^(?!0+(\.0+)?$)\d+(\.\d+)?$/,         message: "Indiquez au moins une technologie." },
-    { id: "deadline",      regex: /^Day[1-9]\d*$/, message: "Choisissez un niveau de difficulté." },
-    { id: "status",      regex: /^(To Do|In Progress|Done)$/, message: "Choisissez un niveau de difficulté." },
-    { id: "dependencies",      regex: /^(TASK-\d+([\s,;]+TASK-d\+)*)?$/, message: "Choisissez un niveau de difficulté." }
+    { id: "nom-tache", regex: /^.{3,100}$/,   message: "Le titre doit contenir entre 3 et 100 caracteres." },
+    { id: "acceptanceCriteria",       regex: /\S/, message: "Ajoutez au moins un critère (un par ligne)." },
+    { id: "t-priority",       regex: /^(Low|Medium|High|Critical)$/,    message: "Priorité : Low, Medium, High ou Critical." },
+    { id: "importance",       regex: /^(Low|Medium|High)$/,    message: "Importance : Low, Medium ou High." },
+    { id: "size",        regex: /^(XS|S|M|L|XL)$/,    message: "Taille : XS, S, M, L ou XL." },
+    { id: "estimatedTime",  regex : /^(?!0+(\.0+)?$)\d+(\.\d+)?$/,         message: "Le temps estimé doit être un nombre supérieur à 0." },
+    { id: "deadline",      regex:  /^Day [1-9]\d*$/, message: "Format attendu : Day 1, Day 2..." },
+    { id: "status",      regex: /^(To Do|In Progress|Done)$/, message: "Choisissez un statut." },
+    { id: "dependencies",      regex: /^(TASK-\d+([\s,;]+TASK-\d+)*)?$/, message: "Format : TASK-001, TASK-002 (ou vide)." }
 
 
 ];

@@ -1,9 +1,13 @@
-import { getProjetDemo, getProjetai, removeProjet, setProjetDemo, setProjetai, updateprojet } from './storage.js';
+import { getProjetDemo, getProjetai, removeProjet, updateprojet } from './storage.js';
 import { validate, validatetache } from './validation.js';
 let container = document.getElementById("projectsList");
 let empty = document.getElementById("msgEmpty");
 let projetCourant=null;
 let tacheCourant=null;
+
+function modeDemo(){
+    return localStorage.getItem("demoChecked")==="true";
+}
 export function renderlist() {
 
     if (!container || !empty) return;
@@ -103,151 +107,47 @@ export function showData(projet) {
     const section = document.getElementById("details");
     if (!section) return;
     section.innerHTML = "";
+
+    if(!projet.tasks) projet.tasks=[];
+
+    const tasks=projet.tasks;
+    const total=tasks.length;
+    const faites=tasks.filter(t=>t.status==="Done");
+    const percent=total===0?0:Math.floor((faites.length/total)*100);
+    const heuresTotal=tasks.reduce((somme,t) => somme+Number(t.estimatedTime),0);
+    const heuresFaite=faites.reduce((somme,t)=>somme+Number(t.estimatedTime),0);
+
     const h1 = document.createElement("h1");
     h1.textContent = projet.nom;
-    let pragph = document.createElement("p");
-    let tasks = projet.tasks || [];
-    const total = tasks.length;
-    const done = tasks.filter(t => t.status === "Done").length;
-    const percent = total === 0 ? 0 : Math.floor((done / total) * 100);
-    pragph.textContent = projet.duree + " jour-" + projet.nbDev + " dev-" + total + "h/" + total + "h -" + percent + "% terminee";
-    const parentDiv = document.createElement("div");
-    const div1 = document.createElement("div");
-    const div2 = document.createElement("div");
-    const div3 = document.createElement("div");
+    h1.className="font-bold text-3xl text-slate-800 mb-3";
 
-    const TodosH2 = document.createElement("h2");
-    const inProgressH2 = document.createElement("h2");
-    const DoneH2 = document.createElement("h2");
-    TodosH2.textContent = "To Do (" + tasks.filter(t => t.status === "To Do").length + ")";
-    inProgressH2.textContent = "inProgres (" + tasks.filter(t => t.status === "In Progress").length + ")";
-    DoneH2.textContent = "Done (" + done + ")";
-    div1.appendChild(TodosH2);
-    div2.appendChild(inProgressH2);
-    div3.appendChild(DoneH2);
-    const listTaskTodo = tasks.filter((t) => t.status === "To Do");
-    const listTaskInprogress = tasks.filter((t) => t.status === "In Progress");
-    const listTaskDone = tasks.filter((t) => t.status === "Done");
-    const list = [listTaskTodo, listTaskInprogress, listTaskDone]
-    const colones = [div1, div2, div3];
-    const DialogUpdate=document.getElementById("update-dialog");
-    document.getElementById("clos-update").onclick=()=>DialogUpdate.close();
-    document.getElementById("btnanluer").onclick=()=>DialogUpdate.close();
+    const infos=document.createElement("p");
+    infos.textContent=projet.duree+" jours -"+projet.nbDev+" dev -"+heuresFaite+"h/"+heuresTotal+"h -"+percent+"% terminee";
+    infos.textContent="text-sm text-gray-500 border border-slate-200 rounded-xl p-4 mb-8 shadow-sm"
+   
+  const parentDiv=document.createElement("p");
+  parentDiv.className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 w-full items-start";
+  const status=[
+    {nom:"To Do",bordure:"border-blue-200",titre:"text-blue-700"},
+    {nom:"In Progress",bordure:"border-orange-200",titre:"text-orange-700"},
+    {nom:"To Do",bordure:"border-green-200",titre:"text-green-700"},
+  ]
 
-    
-    for (let i = 0; i < list.length; i++) {//boucle pour les colone
-        for (let t of list[i]) {// boucle sur chaque list des taches 
+  for(let s of status){
+    const liste=tasks.filter(t=>t.status===s.nom);
+    const col=document.createElement("div");
+    col.className="bg-slate-50 border"+s.bordure+ " rounded-2xl p-5 shadow-sm h-fit min-h-40";
 
-            const card = document.createElement("div");
-            card.draggable = true;
-
-            card.addEventListener("click",()=>{
-                RemplirDialogueTask(t)
-                 DialogUpdate.showModal();
-                 updatetache(t);
-            });
-            
-
-
-            card.dataset.id=t.id;
-            card.addEventListener("dragstart", (e) => {
-                e.dataTransfer.setData("text/plain", t.id)
-            })
-            card.className = "bg-gray-100 border border-slate-200 rounded-md p-2.5 shadow-sm  hover:shadow-md transition-shadow mb-10";
-            const p = document.createElement("p");
-            p.textContent = t.id;
-            const h3 = document.createElement("h3");
-            h3.textContent = t.title;
-            const span1 = document.createElement("span");
-            span1.textContent = t.priority;
-            const span2 = document.createElement("span");
-            span2.textContent = t.size;
-            const span3 = document.createElement("span");
-            span3.textContent = t.estimatedTime;
-            const span4 = document.createElement("span");
-            span4.textContent = t.deadline;
-            card.append(p, h3, span1, span2, span3, span4)
-            colones[i].append(card);
-            if (t.dependencies.length > 0) {
-                const depondencies = document.createElement("p");
-                depondencies.className = "text-[10px] text-slate-500 mt-1"
-                depondencies.textContent = "depend de : " + t.dependencies.join(",");
-                card.append(depondencies)
-            }
-            // je doit ajouter button supprime avec confirm
-            // css
-            p.className = "text-[10px] text-slate-400 font-medium";
-            h3.className = "text-xs font-semibold text-slate-800 leading-snug"
-            span1.className = "text-[10px] font-medium bg-red-100 text-red-700 rounded px-1.5 py-0.5 w-fit"
-            span2.className = "text-[10px]  bg-slate-200 text-slate-600 rounded px-1.5 py-0.5 w-fit"
-            span3.className = "text-[10px]  bg-slate-200 text-slate-600 rounded px-1.5 py-0.5 w-fit"
-            span4.className = "text-[10px]  bg-slate-200 text-slate-600 rounded px-1.5 py-0.5 w-fit"
-        }
-    }
-
-    // add css
-
-    parentDiv.classList.add("grid", "md:grid-cols-2", "lg:grid-cols-3", "gap-6", "w-full", "items-start");
-    h1.classList.add("font-bold", "mb-3", "text-3xl", "text-slate-800");
-    pragph.classList.add("text-sm", "text-gray-500", "border", "border-slate-200", "rounded-xl", "p-4", "mb-8", "shadow-sm")
-    section.classList.add("max-w-7xl", "mx-auto", "px-4", "sm:px-6", "py-8")
-    div1.className = "bg-slate-50 border border-blue-200 rounded-2xl p-5 shadow-sm leading-10 h-fit";
-    div2.className = "bg-slate-50 border border-orange-200 rounded-2xl p-5 shadow-sm leading-10 h-fit";
-    div3.className = "bg-slate-50 border border-green-200 rounded-2xl p-5 shadow-sm leading-10 h-fit";
-    TodosH2.className = "text-lg font-bold text-blue-700 border-blue-200 pb-3"
-    inProgressH2.className = "text-lg font-bold text-orange-700 border-orange-200 pb-3"
-    DoneH2.className = "text-lg font-bold text-green-700 border-green-200 pb-3"
-
-
-
-    parentDiv.append(div1, div2, div3);
-    section.append(h1, pragph, parentDiv);
-
-    // add drang and drop
-    [["To Do", div1], ["In Progress", div2], ["Done", div3]].forEach(([st, col]) => {
-     col.classList.add("min-h-40");
-
-     col.addEventListener("dragover",(e)=>{// jai fait ca pour autoriser le drop de chaque div
-        e.preventDefault();
-     })
-
-     col.addEventListener("drop",(e)=>{//event responsable de leffect lors du lachement de la carte dans une colone
-        e.preventDefault();
-        const id=e.dataTransfer.getData("text/plain");
-        let task=tasks.find((t)=>String(t.id)===id);
-        if(!task) return;
-        const carteCible=e.target.closest("[data-id]"); // return plus proche parennt de element quia atribut data-id
-
-        if(carteCible && carteCible.dataset.id===id) return; // si a crt cibler est la meme carte deplacer
-        // maintenat je doit verifier si cette taches depond dune autre et verifie si la cette derniere est done or not pour que je puise lajouter dans done
-        if(st==="Done"){
-            const bloquees=task.dependencies.filter((depId)=>{
-                const dep=tasks.find((t)=>t.id===depId);
-                return dep && dep.status  !=="Done";
-            })
-            if(bloquees.length>0){
-                alert("impossible : termier dabord "+bloquees.join(", "));
-                return;
-            }
-        }
-        task.status=st;
-        let index=tasks.indexOf(task)
-        tasks.splice(index,1);// supprimer de index un element
-
-        if(carteCible){
-            const idCible=carteCible.dataset.id;
-            const positionCible=tasks.findIndex((t)=>String(t.id)===idCible);
-            tasks.splice(positionCible,0,task);
-        }else{
-            tasks.push(task);
-        }
-        updateprojet(projet);
-        showData(projet);
-     })
-    
-    })
-
-
+    const h2=document.createElement("h2");
+    h2.textContent=s.nom+" ("+liste.length+" )";
+    h2.className="text-lg font-bold mb-3 "+s.titre;
+    col.append(h2);
+    for(let t of liste) col.append(creerCarte(t));
+    activerDrop(col,s.nom,task,projet);
+    parentDiv.append(col);
+  }
+  section.className="max-w-7xl mx-auto px-4 sm:px-6 py-8";
+  section.append(h1,infos,parentDiv);
 
 }
 

@@ -2,7 +2,6 @@ import { addProjet, getProjetDemo } from "./storage.js";
 
 const url="data/data.json";
 export   function load(){
-   if (localStorage.getItem("demoChecked") === "true")return;// si onest dans le mode demo on return 
   return fetch(url)
       .then(response=>{
         if(!response.ok)throw new Error("Erreur HTTP :"+ response.status);
