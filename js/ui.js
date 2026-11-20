@@ -117,7 +117,7 @@ export function initDemo(load, redirectTo) {
     btnDemo.addEventListener("click", async () => {
         const texte=btnDemo.textContent;
         btnDemo.disabled=true;
-        btnDemo.texte="Chargement ...";
+        btnDemo.textContent="Chargement ...";
         try{
             await load();
             localStorage.setItem("demoChecked","true");
@@ -145,7 +145,7 @@ function ouvrirDialogTache(task){
 
     document.getElementById("nom-tache").value=task.title;
     document.getElementById("dec-tache").value=task.description ;
-    document.getElementById("userStories").value=(task.userStories).join("\n");
+    document.getElementById("userStories").value=(task.userStories || []).join("\n");
     document.getElementById("acceptanceCriteria").value=(task.acceptanceCriteria || []).join("\n");
     document.getElementById("t-priority").value=task.priority;
    document.getElementById("importance").value=task.importance;
