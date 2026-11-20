@@ -43,7 +43,32 @@ export function renderlist() {
     }
 
 }
+export function initModeButton(load){
+    const btn=document.getElementById("btnMode");
+    if(!!btn) return ;
 
+    function majTexte(){
+        btn.textContent=modeDemo()?"Voir mes projet IA" :"voir la demo";
+    }
+    majTexte();
+    btn.addEventListener("click",async ()=>{
+        if(modeDemo()){
+            localStorage.setItem("demoChecked","false");
+
+        }else{
+            try{
+                await load();
+                localStorage.setItem("demoChecked","true");
+
+            }catch(error){
+                alert(error.message);
+                return;
+            }
+        }
+        majTexte();
+        renderlist;
+    });
+}
 if (container) {
     container.addEventListener("click", (e) => {
         const btn =e.target.closest(".btn-delete") ;// cherche le plus proche element qui a .btn-delete
