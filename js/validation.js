@@ -26,3 +26,36 @@ export function validate(id){
     }
     return notValide.length > 0 ? false : true  
 }
+
+const tacheRules = [
+    { id: "nom-tache", regex: /^.{3,100}$/,   message: "La description doit contenir entre 10 et 200 caractères." },
+    { id: "acceptanceCriteria",       regex: /\S$/, message: "Le brief doit contenir au moins 30 caractères." },
+    { id: "t-priority",       regex: /^(Low|Medium|High|Critical)$/,    message: "La durée doit être un entier supérieur ou égal à 1." },
+    { id: "importance",       regex: /^(Low|Medium|High)$/,    message: "Le nombre de développeurs doit être un entier supérieur ou égal à 1." },
+    { id: "size",        regex: /^(XS|S|M|L|XL)$/,    message: "Le nombre de développeurs doit être un entier supérieur ou égal à 1." },
+    { id: "estimatedTime",  regex : /^(?!0+(\.0+)?$)\d+(\.\d+)?$/,         message: "Indiquez au moins une technologie." },
+    { id: "deadline",      regex: /^Day[1-9]\d*$/, message: "Choisissez un niveau de difficulté." },
+    { id: "status",      regex: /^(To Do|In Progress|Done)$/, message: "Choisissez un niveau de difficulté." },
+    { id: "dependencies",      regex: /^(TASK-\d+([\s,;]+TASK-d\+)*)?$/, message: "Choisissez un niveau de difficulté." }
+
+
+];
+export function validatetache(id){
+    let notValide=[]
+    for(let rule of tacheRules){
+       let input=document.getElementById(rule.id);
+       let valeur =input.value.trim() ;
+       let valide=rule.regex.test(valeur)
+        if(!valide) notValide.push(rule.id);
+       if(id && id!=rule.id) continue  ;//// ignore les autres champs : seul le champ modifie affiche son erreur
+       let nextElement=input.nextElementSibling;
+       if(nextElement && nextElement.classList.contains("erreur")) nextElement.remove();
+       if(!valide){
+            let span=document.createElement("span")
+            span.textContent=rule.message;
+            span.classList.add("erreur", "block", "text-xs", "mt-1", "text-red-600");
+            input.insertAdjacentElement("afterend",span)
+       }
+    }
+    return notValide.length > 0 ? false : true  
+}

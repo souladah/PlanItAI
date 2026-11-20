@@ -14,7 +14,7 @@ export async function callAi(prompt){// async permet de utiliser await dans cett
         },
         body:JSON.stringify({ // donnee envoyer a ai sous  format text
             contents:[{parts:[{text:prompt}]}] , // gemini doit obligatoirement prend data sous cette form 
-                    generationConfig:{responseMimeType:"application/json"}// forcea gemini de repondre sous format json
+                        generationConfig:{responseMimeType:"application/json"}// forcea gemini de repondre sous format json
         })
                     
     });     

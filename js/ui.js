@@ -1,8 +1,9 @@
 import { getProjetDemo, getProjetai, removeProjet, setProjetDemo, setProjetai, updateprojet } from './storage.js';
-
+import { validate, validatetache } from './validation.js';
 let container = document.getElementById("projectsList");
 let empty = document.getElementById("msgEmpty");
-
+let projetCourant=null;
+let tacheCourant=null;
 export function renderlist() {
 
     if (!container || !empty) return;
@@ -98,6 +99,7 @@ export function initDemo(load, redirectTo) {
     });
 }
 export function showData(projet) {
+    projetCourant=projet;
     const section = document.getElementById("details");
     if (!section) return;
     section.innerHTML = "";
@@ -129,10 +131,10 @@ export function showData(projet) {
     const list = [listTaskTodo, listTaskInprogress, listTaskDone]
     const colones = [div1, div2, div3];
     const DialogUpdate=document.getElementById("update-dialog");
-    const closUpdate=document.getElementById("clos-update");
-    closUpdate.addEventListener("click",()=>{
-         DialogUpdate.close();
-    })
+    document.getElementById("clos-update").onclick=()=>DialogUpdate.close();
+    document.getElementById("btnanluer").onclick=()=>DialogUpdate.close();
+
+    
     for (let i = 0; i < list.length; i++) {//boucle pour les colone
         for (let t of list[i]) {// boucle sur chaque list des taches 
 
@@ -140,8 +142,9 @@ export function showData(projet) {
             card.draggable = true;
 
             card.addEventListener("click",()=>{
+                RemplirDialogueTask(t)
                  DialogUpdate.showModal();
-                 RemplirDialogueInput(t,projet);
+                 updatetache(t);
             });
             
 
@@ -248,16 +251,8 @@ export function showData(projet) {
 
 }
 
-function RemplirDialogueInput(task,projet){
-   document.getElementById("u-nom").value=projet.nom;
-   document.getElementById("u-description").value=projet.description;
-   document.getElementById("u-duree").value=projet.duree;
-   document.getElementById("u-nbDev").value=projet.nbDev;
-   document.getElementById("u-techno").value=projet.techno;
-   document.getElementById("u-brief").value=projet.brief;
-   document.getElementById("u-niveau").value=projet.niveau;
-
-   document.getElementById("id-tache").value=task.id;
+function RemplirDialogueTask(task){
+   
    document.getElementById("nom-tache").value=task.title;
    document.getElementById("acceptanceCriteria").value=task.acceptanceCriteria.join("\n");
    document.getElementById("t-priority").value=task.priority;
@@ -266,10 +261,53 @@ function RemplirDialogueInput(task,projet){
    document.getElementById("estimatedTime").value=task.estimatedTime;
    document.getElementById("deadline").value=task.deadline;
    document.getElementById("status").value=task.status;
-   document.getElementById("dependencies").value=task.dependencies.length>0 ? task.dependenciesjoin("\n"):"aucune dependance";
-
-
-// enregistrer update les champ where id=id corespond
-            
+   document.getElementById("dependencies").value=task.dependencies.join("\n");
+       
 }
+
+function updatetache(tache){
+ 
+ const formulaireUpdate=document.getElementById("form-update");
+ formulaireUpdate.querySelectorAll(".erreur").forEach((e)=>{
+    e.remove();
+ })
+ formulaireUpdate.addEventListener("input",(e)=>{
+  e.preventDefault();
+  validatetache(e.target.value);
+ })
+ formulaireUpdate.addEventListener("submit",(e)=>{
+    e.preventDefault();
+    if(validate(tache.id)){
+            let updatedTache={};
+
+   updatedTache.id=tache.id;
+   updatedTache.title=document.getElementById("nom-tache").value;
+   updatedTache.acceptanceCriteria=document.getElementById("acceptanceCriteria").value;
+   updatedTache.priority=document.getElementById("t-priority").value;
+   updatedTache.importance=document.getElementById("importance").value;
+   updatedTache.size=document.getElementById("size").value;
+   updatedTache.estimatedTime=document.getElementById("estimatedTime").value;
+   updatedTache.deadline=document.getElementById("deadline").value;
+   updatedTache.status=document.getElementById("status").value;
+   updatedTache.dependencies=document.getElementById("dependencies").value=task.dependencies.length>0 ? task.dependenciesjoin("\n"):"aucune dependance";
+// verification du dependance
+   if(updatedTache.status==="Done"){
+            const bloquees=task.dependencies.filter((depId)=>{
+                const dep=tasks.find((t)=>t.id===depId);
+                return dep && dep.status  !=="Done";
+            })
+            if(bloquees.length>0){
+                alert("impossible : termier dabord "+bloquees.join(", "));
+                return;
+            }
+    }
+    Object.assign(tacheCourant,updatedTache)
+    updateprojet(projetCourant)
+    document.getElementById("update-dialog").close()
+    showData()
+ }})
+
+}
+
+
 /// je doit ajouter crud pour chaque plannifiaction et ses taches , button de ai qui affiche les ai a la place de checbox . // button de retour qui retour a la page precedente
