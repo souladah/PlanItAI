@@ -35,11 +35,9 @@ if(form){
              let data = await callAi(prompt);
              
              const plan=JSON.parse(data);
-             projet.id= "task"+Date.now();
-             projet.name=plan.projectName;
+             projet.id= "projet"+Date.now();
              projet.totalEstimatedHours=plan.totalEstimatedHours
              projet.tasks=plan.tasks;
-             delete projet.demoCheckbox ;
              localStorage.setItem("demoChecked","false");
              addProjet(projet,getProjetai);
              window.location.href="index.html" ;

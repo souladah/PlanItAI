@@ -180,7 +180,7 @@ function activerDrop(col,status,tasks,projet){
         if(status==="Done"){
             const bloquees=bloqueesPar(task.dependencies || [],tasks);
             if(bloquees.length>0){
-                alert("Impossible : terminer d abord"+bloquees.join(", "));
+                alert("Impossible : terminer d 'abord"+bloquees.join(", "));
                 return;
             }
         }
@@ -213,7 +213,7 @@ export function showData(projet) {
 
     const h1 = document.createElement("h1");
     h1.textContent = projet.nom;
-    h1.className="font-bold text-3xl text-slate-800 mb-3";
+    h1.className="font-bold text-3xl text-slate-800";
 
     const infos=document.createElement("p");
     infos.textContent=projet.duree+" jours -"+projet.nbDev+" dev -"+heuresFaite+"h/"+heuresTotal+"h -"+percent+"% terminee";
@@ -241,10 +241,26 @@ export function showData(projet) {
     parentDiv.append(col);
   }
   section.className="max-w-7xl mx-auto px-4 sm:px-6 py-8";
-  section.append(h1,infos,parentDiv);
-
+  const haut=document.createElement("div");
+  haut.className="flex justify-between items-center mb-3";
+  const btnModifier=document.createElement("button");
+  btnModifier.type="button";
+  btnModifier.textContent="Modifier le projet";
+  btnModifier.className="cursor-pointer bg-blue-600 hover:bg-blue-700  text-white px-4 py-2 rounded-lg font-semibold";
+  btnModifier.addEventListener("click",ouvrirDialogProjet);
+  haut.append(h1,btnModifier);
+  section.append(haut,infos,parentDiv);
 }
+const champsProjet=["nom","description","duree","nbDev","techno","brief","niveau"];
 
+function ouvrirDialogProjet(){
+    const dialog=document.getElementById("update-projet-dialog");
+    dialog.querySelectorAll(".erreur").forEach((e)=>e.remove());
+    for(let id of champsProjet){
+        document.getElementById(id).value=projetCourant[id]||"";
+    }
+    dialog.showModal();
+}
 export function initDialogs(){
     const dialogTache=document.getElementById("update-dialog");
     const dialogProjet=document.getElementById("update-projet-dialog");
@@ -265,11 +281,11 @@ export function initDialogs(){
         if(!validatetache()) return;
         
         const tasks=projetCourant.tasks;
-        const deps=document.getElementById("dependencies").value.split(/[\s,;]+/).filter(boolean);
+        const deps=document.getElementById("dependencies").value.split(/[\s,;]+/).filter(Boolean);
         const statut=document.getElementById("status").value;
 
         for(let d of deps){
-            if(d===tacheCourant.id || !tasks.somme((t)=>t.id===d)){
+            if(d===tacheCourant.id || !tasks.some((t)=>t.id===d)){
                 alert("Dependance invalide :"+d);
                 return;
             }
@@ -284,7 +300,7 @@ export function initDialogs(){
         }
         Object.assign(tacheCourant, {
             title:document.getElementById("nom-tache").value.trim(),
-            acceptanceCriteria:document.getElementById("acceptanceCriteria").value.split("\n").map((l)=>l.trim()).filter(boolean),
+            acceptanceCriteria:document.getElementById("acceptanceCriteria").value.split("\n").map((l)=>l.trim()).filter(Boolean),
             priority:document.getElementById("t-priority").value,
             importance:document.getElementById("importance").value,
             size:document.getElementById("size").value,
@@ -297,8 +313,24 @@ export function initDialogs(){
         dialogTache.close();
         showData(projetCourant);
     });
+        const formProjet=document.getElementById("form-update-projet");
 
-    document.getElementById("supprmier").addEventListener("click",()=>{
+        formProjet.addEventListener("input",(e)=>{
+            validate(e.target.id);
+        })
+        formProjet.addEventListener("submit",(e)=>{
+            e.preventDefault();
+            if(!validate()) return ;
+            for(let id of champsProjet){
+                projetCourant[id]=document.getElementById(id).value.trim();
+            }
+            updateprojet(projetCourant);
+            dialogProjet.close();
+            showData(projetCourant);
+        });
+   
+
+    document.getElementById("supprimer").addEventListener("click",()=>{
         if(!confirm("supprimer cette tache ?")) return;
         const idSupprime=tacheCourant.id;
 
@@ -314,4 +346,3 @@ export function initDialogs(){
 
 
 
-/// je doit ajouter crud pour chaque plannifiaction et ses taches , button de ai qui affiche les ai a la place de checbox . // button de retour qui retour a la page precedente
